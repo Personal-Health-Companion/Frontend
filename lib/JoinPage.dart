@@ -1,4 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'providers/User.dart';
+import 'apis/userAPI.dart';
+
+class LocationProvider extends ChangeNotifier {
+  String _selectedLocation = '';
+
+  String get selectedLocation => _selectedLocation;
+
+  void setLocation(String location) {
+    _selectedLocation = location;
+    notifyListeners();
+  }
+}
 
 class Join extends StatefulWidget {
   const Join({super.key});
@@ -29,7 +43,11 @@ class _JoinState extends State<Join> {
 }
 
 class JoinPanel extends StatelessWidget {
-  const JoinPanel({super.key});
+  JoinPanel({super.key});
+
+  TextEditingController IDController = TextEditingController();
+  TextEditingController PWController = TextEditingController();
+  TextEditingController NameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +60,7 @@ class JoinPanel extends StatelessWidget {
             height: 5,
           ),
           TextField(
-            // controller: IDController,
+            controller: IDController,
             decoration: InputDecoration(
                 filled: true,
                 fillColor: Color(0xFFF9F9FB),
@@ -59,7 +77,7 @@ class JoinPanel extends StatelessWidget {
             height: 15,
           ),
           TextField(
-            // controller: PWController,
+            controller: PWController,
             decoration: InputDecoration(
                 filled: true,
                 fillColor: Color(0xFFF9F9FB),
@@ -80,7 +98,7 @@ class JoinPanel extends StatelessWidget {
             height: 5,
           ),
           TextField(
-            // controller: PWController,
+            controller: NameController,
             decoration: InputDecoration(
                 filled: true,
                 fillColor: Color(0xFFF9F9FB),
@@ -119,8 +137,22 @@ class JoinPanel extends StatelessWidget {
           ),
 
           ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
+              onPressed: () async {
+                var userID = IDController.text;
+                var userPW = PWController.text;
+                var userName = NameController.text;
+                var userLocation = Provider.of<LocationProvider>(context, listen: false).selectedLocation;
+
+                User joinUser = User(userID: userID, userPassword: userPW, userName: userName, location: userLocation);
+                bool isJoined = await userAPI.join(joinUser);
+
+                if(userID.isEmpty || userPW.isEmpty) {
+                  showModalBottomSheet<void>(context: context, builder: (context) => const InfoError());
+                } else if(isJoined) {
+                  Navigator.pop(context);
+                } else {
+                  showModalBottomSheet<void>(context: context, builder: (context) => Error());
+                }
               },
               child: Text("회원가입 완료")
           ),
@@ -139,13 +171,14 @@ class GetLocation extends StatefulWidget {
 
 class _getLocationState extends State<GetLocation> {
   String selectedCategory = '강원';
-  List<String> itemsForSecondDropdown = ['강릉시', '원주시', '춘천시', '삼척시', '속초시', '영원군', '원주시', '동해시', '태백시', '동해시'];
+  String selectedLocation = '강릉시';
+  List<String> itemsForSecondDropdown = ['강릉시', '원주시', '춘천시', '삼척시', '속초시', '영월군', '동해시', '태백시', '홍천군', '정선군', '양구군', '인제군', '철원군', '횡성군', '평창군', '화천군', '고성군', '양양군'];
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Padding(
-        padding: EdgeInsets.fromLTRB(140, 50, 140, 100),
+        padding: EdgeInsets.fromLTRB(140, 40, 140, 40),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -155,7 +188,7 @@ class _getLocationState extends State<GetLocation> {
                 setState(() {
                   selectedCategory = value!;
                   if (selectedCategory == '강원') {
-                    itemsForSecondDropdown = ['강릉시', '원주시', '춘천시', '삼척시', '속초시', '영월군', '동해시', '태백시', '태백시', '홍천군', '정선군', '양구군', '인제군', '철원군', '횡성군', '평창군', '화천군', '고성군', '양양군'];
+                    itemsForSecondDropdown = ['강릉시', '원주시', '춘천시', '삼척시', '속초시', '영월군', '동해시', '태백시', '홍천군', '정선군', '양구군', '인제군', '철원군', '횡성군', '평창군', '화천군', '고성군', '양양군'];
                   } else if (selectedCategory == '경기') {
                     itemsForSecondDropdown = ['안산단원구', '성남분당구', '부천시', '수원영통구', '안양동안구', '용인처인구', '수원팔달구', '의정부시', '용인기흥구', '수원장안구', '안성시', '이천시', '파주시', '포천시', '광명시', '고양일산동구', '안산상록구', '남양주시', '성남수정구', '성남중원구', '오산시', '군포시', '평택시', '시흥시', '수원권선구', '화성시', '고양덕양구', '김포시', '안양만안구', '고양일산서구', '광주시', '구리시', '용인수지구', '양주시', '양평군', '하남시', '가평군', '동두천시', '여주시', '의왕시', '연천군', '과천시'];
                   } else if(selectedCategory == '경남') {
@@ -189,7 +222,7 @@ class _getLocationState extends State<GetLocation> {
                   } else if(selectedCategory == '충북') {
                     itemsForSecondDropdown = ['청주서원구', '충주시', '진천군', '청주상당구', '제천시', '옥천군', '청주흥덕구', '청주청원구', '음성군', '괴산군', '보은군', '영동군', '단양군', '증평군'];
                   }
-
+                  selectedLocation = itemsForSecondDropdown.first;
                 });
               },
               items: [
@@ -264,10 +297,11 @@ class _getLocationState extends State<GetLocation> {
               ],
             ),
             DropdownButton<String>(
-              value: itemsForSecondDropdown.first,
+              value: selectedLocation,
               onChanged: (value) {
                 setState(() {
-                  // 두 번째 DropdownButton에서 선택한 값에 따라 필요한 동작 수행
+                  selectedLocation = value!;
+                  Provider.of<LocationProvider>(context, listen: false).setLocation(selectedLocation);
                 });
               },
               items: itemsForSecondDropdown
@@ -277,6 +311,44 @@ class _getLocationState extends State<GetLocation> {
               ))
                   .toList(),
             ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class Error extends StatelessWidget {
+  const Error({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const SingleChildScrollView(
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(100, 30, 100, 30),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text("중복된 아이디가 존재합니다."),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class InfoError extends StatelessWidget {
+  const InfoError({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const SingleChildScrollView(
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(100, 30, 100, 30),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text("요구 사항에 맞게 정보를 입력해주세요."),
           ],
         ),
       ),

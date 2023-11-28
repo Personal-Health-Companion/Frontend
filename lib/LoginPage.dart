@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'JoinPage.dart';
+import 'HomePage.dart';
+import 'providers/User.dart';
+import 'apis/userAPI.dart';
 
 class Login extends StatelessWidget {
   const Login({Key? key}) : super(key: key);
@@ -83,7 +86,21 @@ class LoginPanel extends StatelessWidget {
           Container(
             height: 56,
             child: ElevatedButton(
-                onPressed: () {  },
+                onPressed: () async {
+                  var userID = IDController.text;
+                  var userPW = PWController.text;
+                  User loginUser = User(userID: userID, userPassword: userPW, userName: '', location: '');
+                  bool isLoggedIn = await userAPI.login(loginUser);
+
+                  if(isLoggedIn) {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (BuildContext context) => Main()),
+                    );
+                  } else {
+                    showModalBottomSheet<void>(context: context, builder: (context) => Error());
+                  }
+                },
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFa9d18e)),
                 ),
@@ -115,6 +132,25 @@ class LoginPanel extends StatelessWidget {
               )],
           ),
         ],
+      ),
+    );
+  }
+}
+
+class Error extends StatelessWidget {
+  const Error({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const SingleChildScrollView(
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(100, 30, 100, 30),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text("로그인에 실패했습니다."),
+          ],
+        ),
       ),
     );
   }
