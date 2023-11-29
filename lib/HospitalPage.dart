@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class Hospital extends StatelessWidget {
-  const Hospital({super.key});
+class Main extends StatelessWidget {
+  const Main({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -9,7 +9,7 @@ class Hospital extends StatelessWidget {
       appBar: AppBar(
         title: const Center(
           child: Text(
-            'Hospital',
+            'Home',
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Color(0xFF101522),
@@ -20,13 +20,13 @@ class Hospital extends StatelessWidget {
           ),
         ),
       ),
-      body: HospitalPanel(),
+      body: MainPanel(),
     );
   }
 }
 
-class HospitalPanel extends StatelessWidget {
-  const HospitalPanel({super.key});
+class MainPanel extends StatelessWidget {
+  const MainPanel({super.key});
 
   @override
   Widget build(BuildContext context) {
