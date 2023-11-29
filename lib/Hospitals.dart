@@ -71,27 +71,28 @@ class HospitalPanel extends StatelessWidget {
                       return ListTile(
                         title: Container(
                           decoration: BoxDecoration(
-                            border: Border.all(color: Color(0xFF065535), width: 2),
+                            border: Border.all(color: Color(0xFF065535), width: 1),
                             borderRadius: BorderRadius.circular(15),
                           ),
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Text("  " + snapshot.data![index].name),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Text("  종류: " + snapshot.data![index].code),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Text("  " + snapshot.data![index].telephone),
-                                ],
-                              ),
-                            ],
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Text("    " + snapshot.data![index].name),
+                                    Text(" | " + snapshot.data![index].code),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Text("    "),
+                                    Icon(Icons.call),
+                                    Text(snapshot.data![index].telephone),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       );
