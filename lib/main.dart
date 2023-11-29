@@ -2,15 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'LoginPage.dart';
 import 'JoinPage.dart';
+import 'providers/User.dart';
 
 void main() {
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => LocationProvider(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => User(userID: '', userPassword: '', userName: '', location: ''),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => LocationProvider(),
+        ),
+      ],
       child: MyApp(),
     ),
   );
 }
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

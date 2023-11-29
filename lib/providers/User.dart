@@ -1,9 +1,11 @@
 
-class User {
-  final int? Id;
+import 'package:flutter/cupertino.dart';
+
+class User with ChangeNotifier {
+  int? Id;
   final String userID;
   final String userPassword;
-  final String userName;
+  String userName;
   String location;
 
   User(
@@ -13,8 +15,19 @@ class User {
       required this.userName,
       required this.location});
 
+  void setId(int? newId) {
+    Id = newId;
+    notifyListeners();
+  }
+
+  void setUserName(String newName) {
+    userName = newName;
+    notifyListeners();
+  }
+
   void setLocation(String newLocation) {
     location = newLocation;
+    notifyListeners();
   }
 
   Map<String, dynamic> toJson() {

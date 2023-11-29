@@ -28,11 +28,14 @@ class userAPI {
     return true;
   }
 
-  static Future<bool> login(User user) async {
+  static Future<Map<String, dynamic>> login(User user) async {
     final url = Uri.parse('$baseUrl/login');
     final body = {
+      "id": user.Id,
       "userID": user.userID,
-      "userPassword": user.userPassword
+      "userPassword": user.userPassword,
+      "userName": user.userName,
+      "location": user.location
     };
 
     final response = await http.post(url,
@@ -41,10 +44,11 @@ class userAPI {
         },
         body: jsonEncode(body));
 
-    if (response.statusCode != 200) {
-      print(response.statusCode);
-      return false;
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception('Login Failed');
     }
-    return true;
   }
+
 }

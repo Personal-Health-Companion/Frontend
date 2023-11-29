@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'JoinPage.dart';
-import 'HomePage.dart';
+import 'AppHomePage.dart';
 import 'providers/User.dart';
 import 'apis/userAPI.dart';
 
@@ -42,7 +43,7 @@ class LoginPanel extends StatelessWidget {
       child: ListView(
         children: [
           Container(
-            child: Image(image: AssetImage('assets/images/mainLogo.png'))
+            child: Image(image: AssetImage('assets/images/mainLogo_white1.png'))
           ),
           SizedBox(
             height: 50,
@@ -90,14 +91,20 @@ class LoginPanel extends StatelessWidget {
                   var userID = IDController.text;
                   var userPW = PWController.text;
                   User loginUser = User(userID: userID, userPassword: userPW, userName: '', location: '');
-                  bool isLoggedIn = await userAPI.login(loginUser);
+                  try {
+                    Map<String, dynamic> userInfoJson = await userAPI.login(loginUser);
+                    User user = User.fromJson(userInfoJson);
 
-                  if(isLoggedIn) {
+                    var userModel = Provider.of<User>(context, listen: false);
+                    userModel.setId(user.Id);
+                    userModel.setUserName(user.userName);
+                    userModel.setLocation(user.location);
+
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(builder: (BuildContext context) => Main()),
                     );
-                  } else {
+                  } catch (e) {
                     showModalBottomSheet<void>(context: context, builder: (context) => Error());
                   }
                 },
@@ -152,6 +159,16 @@ class Error extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class Hospitals extends StatelessWidget {
+  const Hospitals({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
     );
   }
 }
