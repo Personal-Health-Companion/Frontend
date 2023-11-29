@@ -1,22 +1,6 @@
 import 'package:flutter/material.dart';
 
-class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
-
-  @override
-  _HomeState createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
-  int selectedIndex = 0;
-
-  List<Map<String, dynamic>> icons = [
-    {'icon': Icons.home},
-    {'icon': Icons.chat},
-    {'icon': Icons.calendar_month},
-    {'icon': Icons.person},
-  ];
-
+class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,25 +46,96 @@ class _HomeState extends State<Home> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Recommened Hospitals',
+                    'Recommended Hospitals',
                     style: TextStyle(fontSize: 24),
                   ),
                 ],
               ),
             ),
           ),
+        ],
+      ),
+    );
+  }
+}
+
+class ChatScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(
+        'This is the Chat Screen',
+        style: TextStyle(fontSize: 24),
+      ),
+    );
+  }
+}
+
+class CalendarScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(
+        'This is the Calendar Screen',
+        style: TextStyle(fontSize: 24),
+      ),
+    );
+  }
+}
+
+class PersonScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(
+        'My Page',
+        style: TextStyle(fontSize: 24),
+      ),
+    );
+  }
+}
+
+class Home extends StatefulWidget {
+  const Home({Key? key}) : super(key: key);
+
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  int selectedIndex = 0;
+
+  List<Map<String, dynamic>> icons = [
+    {'icon': Icons.home, 'title': 'Home', 'page': HomeScreen()},
+    {'icon': Icons.chat, 'title': 'Chat', 'page': ChatScreen()},
+    {'icon': Icons.calendar_month, 'title': 'Calendar', 'page': CalendarScreen()},
+    {'icon': Icons.person, 'title': 'Person', 'page': PersonScreen()},
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Column(
+        children: <Widget>[
           Expanded(
+            flex: 2,
+            child: Center(
+              child: icons[selectedIndex]['page'], // 선택된 페이지를 표시
+            ),
+          ),
+          Expanded(
+            flex: 1,
             child: Align(
               alignment: Alignment.bottomCenter,
               child: Container(
-                height: 70,
+                height: 100,
                 child: GridView.count(
                   crossAxisCount: 4,
                   children: List.generate(icons.length, (index) {
                     return GestureDetector(
                       onTap: () {
                         setState(() {
-                          selectedIndex = index;
+                          selectedIndex = index; // 아이콘 선택 시 페이지 변경
                         });
                       },
                       child: Container(
