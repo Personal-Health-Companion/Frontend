@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'apis/hospitalAPI.dart';
 import 'providers/Hospital.dart';
 import 'Hospitals.dart';
+import 'ChatPage.dart';
 
 class Main extends StatefulWidget {
   const Main({super.key});
@@ -44,7 +45,7 @@ class _MainState extends State<Main> {
         },
         children: <Widget>[
           HomePanel(),
-          Center(child: Text('Page 2')),
+          Chat(),
           Center(child: Text('Page 3')),
           Center(child: Text('Page 4')),
         ],
@@ -209,35 +210,36 @@ class HomePanel extends StatelessWidget {
                   return Text('에러가 발생했습니다: ${snapshot.error}');
                 } else {
                   Hospital hospital = snapshot.data!; // 병원 정보 가져오기
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Text("    " + hospital.name),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Text("    병원 코드: " + hospital.code),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Text("    " + hospital.telephone),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          TextButton(onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Hospitals()));
-                          }, child: Text("더보기"))
-                        ],
-                      ),
-                    ],
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Text("    " + hospital.name),
+                            Text(" | " + hospital.code),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text("    "),
+                            Icon(Icons.call),
+                            Text(hospital.telephone),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            TextButton(onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Hospitals()));
+                            }, child: Text("더보기"))
+                          ],
+                        ),
+                      ],
+                    ),
                   );
                 }
               },
