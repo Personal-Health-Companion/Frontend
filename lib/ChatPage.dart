@@ -1,6 +1,9 @@
+import 'package:capstonedesign_23_2/providers/Hospital.dart';
 import 'package:flutter/material.dart';
 import 'providers/User.dart';
 import 'package:provider/provider.dart';
+import 'providers/Chat.dart';
+import 'detailPages/AgeGender.dart';
 
 class Chat extends StatefulWidget {
   const Chat({super.key});
@@ -38,6 +41,9 @@ class _ChatPanelState extends State<ChatPanel> {
   }
 
   Widget _buildTextComposer() {
+    var user = Provider.of<User>(context);
+    bool detailsIsNull = user.details == null;
+
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 8.0),
       child: Row(
@@ -46,17 +52,24 @@ class _ChatPanelState extends State<ChatPanel> {
             child: Container(
               height: 40,
               child: TextField(
+                focusNode: detailsIsNull ? AlwaysDisabledFocusNode() : null,
                 controller: _textController,
                 onSubmitted: _handleSubmitted,
+                onTap: () {
+                  if (detailsIsNull) {
+                    showModalBottomSheet<void>(context: context, builder: (context) => Error());
+                  }
+                },
+                readOnly: detailsIsNull,
                 decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Color(0xFFF9F9FB),
-                    contentPadding: EdgeInsets.symmetric(horizontal: 16),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(width: 1, color: Color(0xFFE5E7EB)),
-                      borderRadius: BorderRadius.circular(24),
-                    ),
-                    labelText: "질문하실 내용을 입력해주세요"
+                  filled: true,
+                  fillColor: Color(0xFFF9F9FB),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(width: 1, color: Color(0xFFE5E7EB)),
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                  labelText: "질문하실 내용을 입력해주세요",
                 ),
               ),
             ),
@@ -64,8 +77,9 @@ class _ChatPanelState extends State<ChatPanel> {
           Container(
             margin: EdgeInsets.symmetric(horizontal: 4.0),
             child: IconButton(
-                icon: Icon(Icons.send),
-                onPressed: () => _handleSubmitted(_textController.text)),
+              icon: Icon(Icons.send),
+              onPressed: detailsIsNull ? null : () => _handleSubmitted(_textController.text),
+            ),
           ),
         ],
       ),
@@ -91,6 +105,11 @@ class _ChatPanelState extends State<ChatPanel> {
       ]),
     );
   }
+}
+
+class AlwaysDisabledFocusNode extends FocusNode {
+  @override
+  bool get hasFocus => false;
 }
 
 class ChatMessage extends StatelessWidget {
@@ -120,6 +139,43 @@ class ChatMessage extends StatelessWidget {
             ],
           ),
         ],
+      ),
+    );
+  }
+}
+
+class Error extends StatelessWidget {
+  const Error({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    var user = Provider.of<User>(context);
+    return SingleChildScrollView(
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(70, 30, 70, 30),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(user.userName + "님의 정보가 없어요.", style: TextStyle(color: Colors.red),),
+            SizedBox(
+              height: 10,
+            ),
+            Text("세부 정보를 입력하시면 증상에 대한 자세한 조언을 드릴 수 있어요."),
+            TextButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AgeGender()));
+              },
+              child: Text('[ 세부 정보 입력 하러 가기 ]',
+                style: TextStyle(
+                  color: Color(0xFF199A8E),
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

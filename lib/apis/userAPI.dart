@@ -6,6 +6,7 @@ class userAPI {
 
   static const String baseUrl = 'http://3.39.13.133:8080';
 
+  // 회원가입
   static Future<bool> join(User user) async {
     final url = Uri.parse('$baseUrl/join');
     final body = {
@@ -28,6 +29,7 @@ class userAPI {
     return true;
   }
 
+  // 로그인
   static Future<Map<String, dynamic>> login(User user) async {
     final url = Uri.parse('$baseUrl/login');
     final body = {
@@ -35,7 +37,8 @@ class userAPI {
       "userID": user.userID,
       "userPassword": user.userPassword,
       "userName": user.userName,
-      "location": user.location
+      "location": user.location,
+      "details": user.details
     };
 
     final response = await http.post(url,
@@ -43,6 +46,9 @@ class userAPI {
           'Content-Type': 'application/json',
         },
         body: jsonEncode(body));
+
+    print('Response status: ${response.statusCode}'); // 응답 상태 코드 로그 출력
+    print('Response body: ${response.body}'); // 응답 본문 로그 출력
 
     if (response.statusCode == 200) {
       return jsonDecode(response.body);

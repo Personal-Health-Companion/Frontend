@@ -1,5 +1,5 @@
-
 import 'package:flutter/cupertino.dart';
+import 'package:capstonedesign_23_2/providers/UserDetail.dart';
 
 class User with ChangeNotifier {
   int? Id;
@@ -7,13 +7,15 @@ class User with ChangeNotifier {
   final String userPassword;
   String userName;
   String location;
+  Details? details;
 
   User(
       {this.Id,
       required this.userID,
       required this.userPassword,
       required this.userName,
-      required this.location});
+      required this.location,
+      this.details});
 
   void setId(int? newId) {
     Id = newId;
@@ -30,6 +32,11 @@ class User with ChangeNotifier {
     notifyListeners();
   }
 
+  void setDetailsId(Details? newDetails) {
+    details = newDetails;
+    notifyListeners();
+  }
+
   Map<String, dynamic> toJson() {
     return {
       'id': Id,
@@ -37,6 +44,7 @@ class User with ChangeNotifier {
       'userPassword': userPassword,
       'userName': userName,
       'location': location,
+      'details': details,
     };
   }
 
@@ -45,5 +53,6 @@ class User with ChangeNotifier {
         userID = json['userID'],
         userPassword = json['userPassword'],
         userName = json['userName'],
-        location = json['location'];
+        location = json['location'],
+        details = json['details'] != null ? Details.fromJson(json['details'] as Map<String, dynamic>) : null;
 }

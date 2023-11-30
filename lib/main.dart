@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'LoginPage.dart';
 import 'JoinPage.dart';
 import 'providers/User.dart';
+import 'providers/Chat.dart';
 
 void main() {
   runApp(
@@ -13,6 +14,9 @@ void main() {
         ),
         ChangeNotifierProvider(
           create: (context) => LocationProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => Chat(),
         ),
       ],
       child: MyApp(),
