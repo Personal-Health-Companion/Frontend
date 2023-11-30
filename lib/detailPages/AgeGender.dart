@@ -1,5 +1,7 @@
+import 'package:capstonedesign_23_2/providers/UserDetail.dart';
 import 'package:flutter/material.dart';
 import 'package:capstonedesign_23_2/detailPages/Disease.dart';
+import 'package:provider/provider.dart';
 
 class AgeGender extends StatefulWidget {
   const AgeGender({super.key});
@@ -44,6 +46,7 @@ class _AgeGenderPanelState extends State<AgeGenderPanel> {
 
   @override
   Widget build(BuildContext context) {
+    var detail = Provider.of<Details>(context);
     return Column(
       children: [
         Padding(
@@ -66,35 +69,33 @@ class _AgeGenderPanelState extends State<AgeGenderPanel> {
           child: Container(
             color: Color(0xFFF9F9FB),
             height: 50,
-            child: Expanded(
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 10.0),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(24.0),
-                  border: Border.all(
-                    color: Colors.grey,
-                    style: BorderStyle.solid,
-                    width: 0.80,
-                  ),
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 10.0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(24.0),
+                border: Border.all(
+                  color: Colors.grey,
+                  style: BorderStyle.solid,
+                  width: 0.80,
                 ),
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton<String>(
-                    dropdownColor: Color(0xFFF9F9FB),
-                    isExpanded: true,
-                    value: _selectedGender,
-                    items: <String>["남성", "여성", "기타"].map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                    hint: Text("성별을 선택해주세요."),
-                    onChanged: _agreedToTOS ? (String? newValue) {
-                      setState(() {
-                        _selectedGender = newValue;
-                      });
-                    } : null,
-                  ),
+              ),
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton<String>(
+                  dropdownColor: Color(0xFFF9F9FB),
+                  isExpanded: true,
+                  value: _selectedGender,
+                  items: <String>["남성", "여성"].map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                  hint: Text("성별을 선택해주세요."),
+                  onChanged: _agreedToTOS ? (String? newValue) {
+                    setState(() {
+                      _selectedGender = newValue;
+                    });
+                  } : null,
                 ),
               ),
             ),
@@ -112,7 +113,6 @@ class _AgeGenderPanelState extends State<AgeGenderPanel> {
                   borderSide: BorderSide(width: 1, color: Color(0xFFE5E7EB)),
                   borderRadius: BorderRadius.circular(24),
                 ),
-                prefixIcon: const Icon(Icons.account_circle),
                 labelText: "나이를 입력해주세요"
             ),
             keyboardType: TextInputType.number,
@@ -123,6 +123,9 @@ class _AgeGenderPanelState extends State<AgeGenderPanel> {
           height: 300,
         ),
         TextButton(onPressed: () {
+          detail.setAgeGender(_ageController.text, _selectedGender!);
+          print(detail.age);
+          print(detail.gender);
           Navigator.push(
               context,
               MaterialPageRoute(

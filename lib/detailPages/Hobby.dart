@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:capstonedesign_23_2/apis/userDetailAPI.dart';
+import '../providers/User.dart';
+import '../providers/UserDetail.dart';
 
 class Hobby extends StatelessWidget {
   const Hobby({super.key});
@@ -33,6 +37,8 @@ class HobbyPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var user = Provider.of<User>(context);
+    var detail = Provider.of<Details>(context);
     return Column(
       children: [
         SizedBox(
@@ -61,7 +67,6 @@ class HobbyPanel extends StatelessWidget {
                 prefixIcon: const Icon(Icons.looks_one),
                 labelText: "1순위 취미 활동"
             ),
-            keyboardType: TextInputType.number,
           ),
         ),
         Row(
@@ -87,7 +92,6 @@ class HobbyPanel extends StatelessWidget {
                 prefixIcon: const Icon(Icons.looks_two),
                 labelText: "2순위 취미 활동"
             ),
-            keyboardType: TextInputType.number,
           ),
         ),
         Row(
@@ -113,17 +117,24 @@ class HobbyPanel extends StatelessWidget {
                 prefixIcon: const Icon(Icons.looks_3),
                 labelText: "3순위 취미 활동"
             ),
-            keyboardType: TextInputType.number,
           ),
         ),
         SizedBox(
           height: 240,
         ),
-        TextButton(onPressed: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => Hobby()));
+        TextButton(onPressed: () async {
+          _hobby1Controller.text ??= '';
+          _hobby2Controller.text ??= '';
+          _hobby2Controller.text ??= '';
+          detail.setHobby(_hobby1Controller.text, _hobby2Controller.text, _hobby3Controller.text);
+
+          Details savaDetails = Details(age: detail.age, gender: detail.gender, disease1: detail.disease1, disease2: detail.disease2, disease3: detail.disease3, surgery: detail.surgery, hobby1: detail.hobby1, hobby2: detail.hobby2, hobby3: detail.hobby3, medicine: detail.medicine);
+          bool isSaved = await userDetailAPI.save(user, savaDetails);
+
+          if(isSaved) {
+            Navigator.of(context).popUntil((route) => route.isFirst);
+          }
+
         }, child: Text("완료"))
       ],
     );
