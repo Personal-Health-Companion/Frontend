@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:capstonedesign_23_2/detailPages/Disease.dart';
 import 'package:capstonedesign_23_2/detailPages/Hobby.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/UserDetail.dart';
 
 class SurgeryMedicine extends StatefulWidget {
   const SurgeryMedicine({super.key});
@@ -45,12 +48,13 @@ class _SurgeryMedicinePanelState extends State<SurgeryMedicinePanel> {
 
   @override
   Widget build(BuildContext context) {
+    var detail = Provider.of<Details>(context);
     return Column(
       children: [
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: CheckboxListTile(
-            title: Text("[필수] 의료 정보 수집에 동의합니다."),
+            title: Text("의료 정보 수집에 동의합니다."),
             value: _agreedToTOS,
             onChanged: (bool? newValue) {
               setState(() {
@@ -77,7 +81,6 @@ class _SurgeryMedicinePanelState extends State<SurgeryMedicinePanel> {
                 prefixIcon: const Icon(Icons.masks),
                 labelText: "수술 하신 적이 있다면 이름을 알려주세요"
             ),
-            keyboardType: TextInputType.number,
             enabled: _agreedToTOS,
           ),
         ),
@@ -96,7 +99,6 @@ class _SurgeryMedicinePanelState extends State<SurgeryMedicinePanel> {
                 prefixIcon: const Icon(Icons.medication_rounded),
                 labelText: "복용 중인 약을 알려주세요"
             ),
-            keyboardType: TextInputType.number,
             enabled: _agreedToTOS,
           ),
         ),
@@ -104,6 +106,13 @@ class _SurgeryMedicinePanelState extends State<SurgeryMedicinePanel> {
           height: 300,
         ),
         TextButton(onPressed: () {
+          _surgeryController.text ??= '';
+          _medicineController.text ??= '';
+          detail.setSurgeryMedicine(_surgeryController.text, _medicineController.text);
+
+          print(_surgeryController.text);
+          print(_medicineController.text);
+
           Navigator.push(
               context,
               MaterialPageRoute(

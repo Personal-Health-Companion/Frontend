@@ -4,6 +4,7 @@ import 'LoginPage.dart';
 import 'JoinPage.dart';
 import 'providers/User.dart';
 import 'providers/Chat.dart';
+import 'providers/UserDetail.dart';
 
 void main() {
   runApp(
@@ -17,6 +18,9 @@ void main() {
         ),
         ChangeNotifierProvider(
           create: (context) => Chat(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => Details(age: '', gender: '', disease1: '', disease2: '', disease3: '', surgery: '', hobby1: '', hobby2: '', hobby3: '', medicine: ''),
         ),
       ],
       child: MyApp(),

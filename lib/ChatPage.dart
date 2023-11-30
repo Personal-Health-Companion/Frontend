@@ -1,9 +1,11 @@
 import 'package:capstonedesign_23_2/providers/Hospital.dart';
+import 'package:capstonedesign_23_2/providers/UserDetail.dart';
 import 'package:flutter/material.dart';
 import 'providers/User.dart';
 import 'package:provider/provider.dart';
 import 'providers/Chat.dart';
 import 'detailPages/AgeGender.dart';
+import 'apis/chatAPI.dart';
 
 class Chat extends StatefulWidget {
   const Chat({super.key});
@@ -42,7 +44,8 @@ class _ChatPanelState extends State<ChatPanel> {
 
   Widget _buildTextComposer() {
     var user = Provider.of<User>(context);
-    bool detailsIsNull = user.details == null;
+    var detail = Provider.of<Details>(context);
+    bool detailsIsNull = detail.age == '';
 
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 8.0),
@@ -78,7 +81,14 @@ class _ChatPanelState extends State<ChatPanel> {
             margin: EdgeInsets.symmetric(horizontal: 4.0),
             child: IconButton(
               icon: Icon(Icons.send),
-              onPressed: detailsIsNull ? null : () => _handleSubmitted(_textController.text),
+              onPressed: () async {
+                detailsIsNull ? null : () => _handleSubmitted(_textController.text);
+
+                String text = _textController.text;
+                String ans = await ChatAPI.saveChat(user, text);
+
+                print(ans);
+              },
             ),
           ),
         ],

@@ -4,27 +4,27 @@ class Details with ChangeNotifier {
   int? id;
   String age;
   String gender;
-  String? disease1 = '';
-  String? disease2 = '';
-  String? disease3 = '';
-  String? surgery = '';
-  String? hobby1 = '';
-  String? hobby2 = '';
-  String? hobby3 = '';
-  String? medicine = '';
+  String disease1 = '';
+  String disease2 = '';
+  String disease3 = '';
+  String surgery = '';
+  String hobby1 = '';
+  String hobby2 = '';
+  String hobby3 = '';
+  String medicine = '';
 
   Details(
   {this.id,
   required this.age,
   required this.gender,
-  this.disease1,
-  this.disease2,
-  this.disease3,
-  this.surgery,
-  this.hobby1,
-  this.hobby2,
-  this.hobby3,
-  this.medicine});
+  required this.disease1,
+  required this.disease2,
+  required this.disease3,
+  required this.surgery,
+  required this.hobby1,
+  required this.hobby2,
+  required this.hobby3,
+  required this.medicine});
 
   void setAgeGender(String newAge, String newGender) {
     age = newAge;

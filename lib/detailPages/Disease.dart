@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:capstonedesign_23_2/detailPages/SurgeryMedicine.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/UserDetail.dart';
 
 class Disease extends StatefulWidget {
   const Disease({super.key});
@@ -40,11 +43,36 @@ class DiseasePanel extends StatefulWidget {
 class _DiseasePanelState extends State<DiseasePanel> {
   bool _agreedToTOS = false;
 
+  Map<String, bool> checkboxStates = {
+    '고혈압': false,
+    '당뇨병': false,
+    '심근경색': false,
+    '협심증': false,
+    '뇌졸중': false,
+    '폐결핵': false,
+    'B형간염': false,
+    'C형간염': false,
+    '간질환': false,
+    '위궤양': false,
+    '십이지장궤양': false,
+    '위염': false,
+    '담석증': false,
+    '암': false,
+    '갑상선질환': false,
+    '신장질환': false,
+    '요로결석': false,
+    '유방질환': false,
+    '천식': false,
+    '여성질환': false,
+    '알레르기': false,
+    '약물부작용': false,
+  };
+
   bool _hypertension = false;           // 고혈압
   bool _diabete = false;                // 당뇨병
   bool _myocardialInfarction = false;   // 심근경색
   bool _anginaPectoris = false;         // 협심증
-  bool _stroke = false;                 // 뇌졸증
+  bool _stroke = false;                 // 뇌졸중
   bool _pulmonaryTuberculosis = false;  // 폐결핵
   bool _hepatitisB = false;             // B형간염 (보균)
   bool _hepatitisC = false;             // C형간염
@@ -65,12 +93,13 @@ class _DiseasePanelState extends State<DiseasePanel> {
 
   @override
   Widget build(BuildContext context) {
+    var detail = Provider.of<Details>(context);
     return Column(
       children: [
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: CheckboxListTile(
-            title: Text("[필수] 의료 정보 수집에 동의합니다."),
+            title: Text("의료 정보 수집에 동의합니다."),
             value: _agreedToTOS,
             onChanged: (bool? newValue) {
               setState(() {
@@ -125,6 +154,7 @@ class _DiseasePanelState extends State<DiseasePanel> {
                     } else {
                       // 그렇지 않으면, 체크박스의 상태를 업데이트합니다.
                       setState(() {
+                        checkboxStates['고혈압'] = true;
                         _hypertension = value!;
                       });
                     }
@@ -165,6 +195,7 @@ class _DiseasePanelState extends State<DiseasePanel> {
                     } else {
                       // 그렇지 않으면, 체크박스의 상태를 업데이트합니다.
                       setState(() {
+                        checkboxStates['당뇨병'] = true;
                         _diabete = value!;
                       });
                     }
@@ -205,6 +236,7 @@ class _DiseasePanelState extends State<DiseasePanel> {
                     } else {
                       // 그렇지 않으면, 체크박스의 상태를 업데이트합니다.
                       setState(() {
+                        checkboxStates['심근경색'] = true;
                         _myocardialInfarction = value!;
                       });
                     }
@@ -245,6 +277,7 @@ class _DiseasePanelState extends State<DiseasePanel> {
                     } else {
                       // 그렇지 않으면, 체크박스의 상태를 업데이트합니다.
                       setState(() {
+                        checkboxStates['협심증'] = true;
                         _anginaPectoris = value!;
                       });
                     }
@@ -285,6 +318,7 @@ class _DiseasePanelState extends State<DiseasePanel> {
                     } else {
                       // 그렇지 않으면, 체크박스의 상태를 업데이트합니다.
                       setState(() {
+                        checkboxStates['뇌졸중'] = true;
                         _stroke = value!;
                       });
                     }
@@ -325,6 +359,7 @@ class _DiseasePanelState extends State<DiseasePanel> {
                     } else {
                       // 그렇지 않으면, 체크박스의 상태를 업데이트합니다.
                       setState(() {
+                        checkboxStates['폐결핵'] = true;
                         _pulmonaryTuberculosis = value!;
                       });
                     }
@@ -365,6 +400,7 @@ class _DiseasePanelState extends State<DiseasePanel> {
                     } else {
                       // 그렇지 않으면, 체크박스의 상태를 업데이트합니다.
                       setState(() {
+                        checkboxStates['B형간염'] = true;
                         _hepatitisB = value!;
                       });
                     }
@@ -405,6 +441,7 @@ class _DiseasePanelState extends State<DiseasePanel> {
                     } else {
                       // 그렇지 않으면, 체크박스의 상태를 업데이트합니다.
                       setState(() {
+                        checkboxStates['C형간염'] = true;
                         _hepatitisC = value!;
                       });
                     }
@@ -445,6 +482,7 @@ class _DiseasePanelState extends State<DiseasePanel> {
                     } else {
                       // 그렇지 않으면, 체크박스의 상태를 업데이트합니다.
                       setState(() {
+                        checkboxStates['간질환'] = true;
                         _liverDisease = value!;
                       });
                     }
@@ -485,6 +523,7 @@ class _DiseasePanelState extends State<DiseasePanel> {
                     } else {
                       // 그렇지 않으면, 체크박스의 상태를 업데이트합니다.
                       setState(() {
+                        checkboxStates['위궤양'] = true;
                         _stomachUlcers = value!;
                       });
                     }
@@ -525,6 +564,7 @@ class _DiseasePanelState extends State<DiseasePanel> {
                     } else {
                       // 그렇지 않으면, 체크박스의 상태를 업데이트합니다.
                       setState(() {
+                        checkboxStates['십이지장궤양'] = true;
                         _duodenalUlcer = value!;
                       });
                     }
@@ -565,6 +605,7 @@ class _DiseasePanelState extends State<DiseasePanel> {
                     } else {
                       // 그렇지 않으면, 체크박스의 상태를 업데이트합니다.
                       setState(() {
+                        checkboxStates['위염'] = true;
                         _gastritis = value!;
                       });
                     }
@@ -605,6 +646,7 @@ class _DiseasePanelState extends State<DiseasePanel> {
                     } else {
                       // 그렇지 않으면, 체크박스의 상태를 업데이트합니다.
                       setState(() {
+                        checkboxStates['담석증'] = true;
                         _cholelithiasis = value!;
                       });
                     }
@@ -645,6 +687,7 @@ class _DiseasePanelState extends State<DiseasePanel> {
                     } else {
                       // 그렇지 않으면, 체크박스의 상태를 업데이트합니다.
                       setState(() {
+                        checkboxStates['암'] = true;
                         _cancer = value!;
                       });
                     }
@@ -685,6 +728,7 @@ class _DiseasePanelState extends State<DiseasePanel> {
                     } else {
                       // 그렇지 않으면, 체크박스의 상태를 업데이트합니다.
                       setState(() {
+                        checkboxStates['갑상선질환'] = true;
                         _thyroidDisease = value!;
                       });
                     }
@@ -725,6 +769,7 @@ class _DiseasePanelState extends State<DiseasePanel> {
                     } else {
                       // 그렇지 않으면, 체크박스의 상태를 업데이트합니다.
                       setState(() {
+                        checkboxStates['신장질환'] = true;
                         _kidneyDisease = value!;
                       });
                     }
@@ -765,6 +810,7 @@ class _DiseasePanelState extends State<DiseasePanel> {
                     } else {
                       // 그렇지 않으면, 체크박스의 상태를 업데이트합니다.
                       setState(() {
+                        checkboxStates['요로결석'] = true;
                         _urolithiasis = value!;
                       });
                     }
@@ -805,6 +851,7 @@ class _DiseasePanelState extends State<DiseasePanel> {
                     } else {
                       // 그렇지 않으면, 체크박스의 상태를 업데이트합니다.
                       setState(() {
+                        checkboxStates['유방질환'] = true;
                         _breastDiseases = value!;
                       });
                     }
@@ -845,6 +892,7 @@ class _DiseasePanelState extends State<DiseasePanel> {
                     } else {
                       // 그렇지 않으면, 체크박스의 상태를 업데이트합니다.
                       setState(() {
+                        checkboxStates['천식'] = true;
                         _asthma = value!;
                       });
                     }
@@ -885,6 +933,7 @@ class _DiseasePanelState extends State<DiseasePanel> {
                     } else {
                       // 그렇지 않으면, 체크박스의 상태를 업데이트합니다.
                       setState(() {
+                        checkboxStates['여성질환'] = true;
                         _womenHealth = value!;
                       });
                     }
@@ -925,6 +974,7 @@ class _DiseasePanelState extends State<DiseasePanel> {
                     } else {
                       // 그렇지 않으면, 체크박스의 상태를 업데이트합니다.
                       setState(() {
+                        checkboxStates['알레르기'] = true;
                         _allergies = value!;
                       });
                     }
@@ -965,6 +1015,7 @@ class _DiseasePanelState extends State<DiseasePanel> {
                     } else {
                       // 그렇지 않으면, 체크박스의 상태를 업데이트합니다.
                       setState(() {
+                        checkboxStates['약물부작용'] = true;
                         _adverseDrugReactions = value!;
                       });
                     }
@@ -979,6 +1030,13 @@ class _DiseasePanelState extends State<DiseasePanel> {
           height: 50,
         ),
         TextButton(onPressed: () {
+          List<String> selectedItems = checkboxStates.keys.where((key) => checkboxStates[key] == true).toList();
+          detail.setDiseases(selectedItems[0], selectedItems[1], selectedItems[2]);
+
+          print(detail.disease1);
+          print(detail.disease2);
+          print(detail.disease3);
+
           Navigator.push(
               context,
               MaterialPageRoute(
