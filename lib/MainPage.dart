@@ -6,6 +6,7 @@ import 'providers/Hospital.dart';
 import 'Hospitals.dart';
 import 'ChatPage.dart';
 import 'Calendar.dart';
+import 'MyPage.dart';
 
 class Main extends StatefulWidget {
   const Main({super.key});
@@ -21,7 +22,7 @@ class _MainState extends State<Main> {
 
   @override
   Widget build(BuildContext context) {
-
+    var user = Provider.of<User>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Center(
@@ -48,7 +49,7 @@ class _MainState extends State<Main> {
           HomePanel(),
           Chat(),
           Calendar(),
-          Center(child: Text('Page 4')),
+          MyPage(userName: user.userName),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -252,4 +253,3 @@ class HomePanel extends StatelessWidget {
     );
   }
 }
-
