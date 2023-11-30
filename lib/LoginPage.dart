@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'JoinPage.dart';
-import 'AppHomePage.dart';
+import 'MainPage.dart';
 import 'providers/User.dart';
 import 'apis/userAPI.dart';
 
@@ -105,6 +105,7 @@ class LoginPanel extends StatelessWidget {
                       MaterialPageRoute(builder: (BuildContext context) => Main()),
                     );
                   } catch (e) {
+                    print(e);
                     showModalBottomSheet<void>(context: context, builder: (context) => Error());
                   }
                 },
@@ -136,7 +137,8 @@ class LoginPanel extends StatelessWidget {
                     color: Color(0xFF199A8E),
                   ),
                 ),
-              )],
+              )
+            ],
           ),
         ],
       ),
@@ -155,20 +157,10 @@ class Error extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("로그인에 실패했습니다."),
+            Text("로그인에 실패했습니다.", style: TextStyle(color: Colors.red),),
           ],
         ),
       ),
-    );
-  }
-}
-
-class Hospitals extends StatelessWidget {
-  const Hospitals({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
     );
   }
 }

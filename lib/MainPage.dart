@@ -5,6 +5,7 @@ import 'apis/hospitalAPI.dart';
 import 'providers/Hospital.dart';
 import 'Hospitals.dart';
 import 'ChatPage.dart';
+import 'Calendar.dart';
 
 class Main extends StatefulWidget {
   const Main({super.key});
@@ -46,7 +47,7 @@ class _MainState extends State<Main> {
         children: <Widget>[
           HomePanel(),
           Chat(),
-          Center(child: Text('Page 3')),
+          Calendar(),
           Center(child: Text('Page 4')),
         ],
       ),
