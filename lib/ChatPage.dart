@@ -32,10 +32,11 @@ class _ChatPanelState extends State<ChatPanel> {
   final List<ChatMessage> _messages = <ChatMessage>[];
   final TextEditingController _textController = TextEditingController();
 
-  void _handleSubmitted(String text) {
+  void _handleSubmitted(String text, String role) {
     _textController.clear();
     ChatMessage message = ChatMessage(
       text: text,
+      role: role,
     );
     setState(() {
       _messages.insert(0, message);
@@ -57,7 +58,9 @@ class _ChatPanelState extends State<ChatPanel> {
               child: TextField(
                 focusNode: detailsIsNull ? AlwaysDisabledFocusNode() : null,
                 controller: _textController,
-                onSubmitted: _handleSubmitted,
+                onSubmitted: (String text) {
+                  _handleSubmitted(text, user.userName);
+                },
                 onTap: () {
                   if (detailsIsNull) {
                     showModalBottomSheet<void>(context: context, builder: (context) => Error());
@@ -82,12 +85,15 @@ class _ChatPanelState extends State<ChatPanel> {
             child: IconButton(
               icon: Icon(Icons.send),
               onPressed: () async {
-                detailsIsNull ? null : () => _handleSubmitted(_textController.text);
+                if (!detailsIsNull) {
+                  String text = _textController.text;
+                  _handleSubmitted(text, "User"); // 화면에 메시지 추가
 
-                String text = _textController.text;
-                String ans = await ChatAPI.saveChat(user, text);
+                  String ans = await ChatAPI.saveChat(user, text); // API 통신
+                  print(ans);
 
-                print(ans);
+                  _handleSubmitted(ans, "System");
+                }
               },
             ),
           ),
@@ -123,13 +129,13 @@ class AlwaysDisabledFocusNode extends FocusNode {
 }
 
 class ChatMessage extends StatelessWidget {
-  ChatMessage({required this.text});
+  ChatMessage({required this.text, required this.role});
 
   final String text;
+  final String role;
 
   @override
   Widget build(BuildContext context) {
-    var user = Provider.of<User>(context);
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10.0),
       child: Row(
@@ -138,21 +144,24 @@ class ChatMessage extends StatelessWidget {
           Container(
             margin: EdgeInsets.only(right: 16.0),
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(user.userName, style: Theme.of(context).textTheme.subtitle1),
-              Container(
-                margin: EdgeInsets.only(top: 5.0),
-                child: Text(text),
-              ),
-            ],
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(role, style: Theme.of(context).textTheme.subtitle1),
+                Container(
+                  margin: EdgeInsets.only(top: 5.0),
+                  child: Text(text, softWrap: true, overflow: TextOverflow.visible, style: TextStyle(fontSize: 18),),
+                ),
+              ],
+            ),
           ),
         ],
-      ),
+      )
     );
   }
 }
+
 
 class Error extends StatelessWidget {
   const Error({super.key});

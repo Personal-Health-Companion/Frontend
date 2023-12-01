@@ -5,6 +5,7 @@ import 'JoinPage.dart';
 import 'providers/User.dart';
 import 'providers/Chat.dart';
 import 'providers/UserDetail.dart';
+import 'providers/PostList.dart';
 
 void main() {
   runApp(
@@ -21,6 +22,9 @@ void main() {
         ),
         ChangeNotifierProvider(
           create: (context) => Details(age: '', gender: '', disease1: '', disease2: '', disease3: '', surgery: '', hobby1: '', hobby2: '', hobby3: '', medicine: '', job: ''),
+        ),
+        ChangeNotifierProvider(
+            create: (context) => PostList(),
         ),
       ],
       child: MyApp(),

@@ -7,6 +7,7 @@ import 'Hospitals.dart';
 import 'ChatPage.dart';
 import 'Calendar.dart';
 import 'MyPage.dart';
+import 'PostPage.dart';
 
 class Main extends StatefulWidget {
   const Main({super.key});
@@ -109,7 +110,12 @@ class HomePanel extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => PostPage()));
+                      },
                       child: Column(
                         children: [
                           Image.asset('assets/images/1.png'),
