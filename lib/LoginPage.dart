@@ -1,3 +1,4 @@
+import 'package:capstonedesign_23_2/providers/UserDetail.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'JoinPage.dart';
@@ -14,7 +15,7 @@ class Login extends StatelessWidget {
       appBar: AppBar(
         title: const Center(
           child: Text(
-            'Login',
+            '로그인',
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Color(0xFF101522),
@@ -67,6 +68,7 @@ class LoginPanel extends StatelessWidget {
           ),
           TextField(
             controller: PWController,
+            obscureText: true,
             decoration: InputDecoration(
                 filled: true,
                 fillColor: Color(0xFFF9F9FB),
@@ -93,12 +95,19 @@ class LoginPanel extends StatelessWidget {
                   User loginUser = User(userID: userID, userPassword: userPW, userName: '', location: '');
                   try {
                     Map<String, dynamic> userInfoJson = await userAPI.login(loginUser);
-                    User user = User.fromJson(userInfoJson);
+                    User userLogin = User.fromJson(userInfoJson);
 
-                    var userModel = Provider.of<User>(context, listen: false);
-                    userModel.setId(user.Id);
-                    userModel.setUserName(user.userName);
-                    userModel.setLocation(user.location);
+                    var user = Provider.of<User>(context, listen: false);
+                    user.setId(userLogin.Id);
+                    user.setUserName(userLogin.userName);
+                    user.setLocation(userLogin.location);
+                    user.setDetails(userLogin.details);
+
+                    final details = user.details;
+                    if(details != null) {
+                      var detail = Provider.of<Details>(context, listen: false);
+                      detail.setLogin(details.age, details.gender, details.job, details.disease1, details.disease2, details.disease3, details.surgery, details.hobby1, details.hobby2, details.hobby3, details.medicine);
+                    }
 
                     Navigator.pushReplacement(
                       context,

@@ -20,7 +20,7 @@ void main() {
           create: (context) => Chat(),
         ),
         ChangeNotifierProvider(
-          create: (context) => Details(age: '', gender: '', disease1: '', disease2: '', disease3: '', surgery: '', hobby1: '', hobby2: '', hobby3: '', medicine: ''),
+          create: (context) => Details(age: '', gender: '', disease1: '', disease2: '', disease3: '', surgery: '', hobby1: '', hobby2: '', hobby3: '', medicine: '', job: ''),
         ),
       ],
       child: MyApp(),

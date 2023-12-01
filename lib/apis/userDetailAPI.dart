@@ -14,6 +14,7 @@ class userDetailAPI {
       'id': details.id,
       'age': details.age,
       'gender': details.gender,
+      'job': details.job,
       'disease1': details.disease1,
       'disease2': details.disease2,
       'disease3': details.disease3,

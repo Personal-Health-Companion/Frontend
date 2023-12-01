@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'providers/User.dart';
 import 'package:provider/provider.dart';
 import 'providers/Chat.dart';
-import 'detailPages/AgeGender.dart';
+import 'detailPages/AgeGenderJob.dart';
 import 'apis/chatAPI.dart';
 
 class Chat extends StatefulWidget {

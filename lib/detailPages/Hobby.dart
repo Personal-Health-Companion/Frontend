@@ -12,7 +12,7 @@ class Hobby extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          '                     Hobby',
+          '                        취미',
           style: TextStyle(
             color: Color(0xFF101522),
             fontSize: 20,
@@ -128,7 +128,7 @@ class HobbyPanel extends StatelessWidget {
           _hobby2Controller.text ??= '';
           detail.setHobby(_hobby1Controller.text, _hobby2Controller.text, _hobby3Controller.text);
 
-          Details savaDetails = Details(age: detail.age, gender: detail.gender, disease1: detail.disease1, disease2: detail.disease2, disease3: detail.disease3, surgery: detail.surgery, hobby1: detail.hobby1, hobby2: detail.hobby2, hobby3: detail.hobby3, medicine: detail.medicine);
+          Details savaDetails = Details(age: detail.age, gender: detail.gender, disease1: detail.disease1, disease2: detail.disease2, disease3: detail.disease3, surgery: detail.surgery, hobby1: detail.hobby1, hobby2: detail.hobby2, hobby3: detail.hobby3, medicine: detail.medicine, job: detail.job);
           bool isSaved = await userDetailAPI.save(user, savaDetails);
 
           if(isSaved) {
