@@ -1,13 +1,15 @@
+import 'package:capstonedesign_23_2/providers/User.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'JoinPage.dart';
 import 'LoginPage.dart';
 
 class MyPage extends StatelessWidget {
-  final String userName;
-
-  const MyPage({Key? key, required this.userName}) : super(key: key);
+  const MyPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    var user = Provider.of<User>(context);
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -15,61 +17,84 @@ class MyPage extends StatelessWidget {
           Center(
             child: Padding(
               padding: const EdgeInsets.all(20.0),
-              child: Text(
-                '$userName 님',
+              child: Text(user.userName + " 님",
                 style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
               ),
             ),
           ),
-          Expanded(
-            child: Container(
-              color: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  buildButtonWithIcon(
+          SizedBox(
+            height: 100,
+          ),
+          Container(
+            decoration: ShapeDecoration(
+              color: Color(0xFFa9d18e),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(50),
+                  topRight: Radius.circular(50),
+                ),
+              ),
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Container(
+                  height: 60,
+                  child: buildButtonWithIcon(
                     onPressed: () {
                       // '내 정보 수정' 버튼 눌렀을 때 수행할 작업 추가
                     },
                     label: '내 정보 수정',
                     icon: Icons.edit,
                   ),
-                  const Divider(),
-                  buildButtonWithIcon(
+                ),
+                const Divider(color: Color(0xFF065535)),
+                Container(
+                  height: 60,
+                  child: buildButtonWithIcon(
                     onPressed: () {
                       // '내가 쓴 질문글' 버튼 눌렀을 때 수행할 작업 추가
                     },
                     label: '내가 쓴 질문글',
-                    icon: Icons.speaker_notes,
+                    icon: Icons.list,
                   ),
-                  const Divider(),
-                  buildButtonWithIcon(
+                ),
+                const Divider(color: Color(0xFF065535)),
+                Container(
+                  height: 60,
+                  child: buildButtonWithIcon(
                     onPressed: () {
                       _showCustomerServiceDialog(context);
                     },
                     label: '고객센터',
-                    icon: Icons.help_center,
+                    icon: Icons.help,
                   ),
-                  const Divider(),
-                  buildButtonWithIcon(
+                ),
+                const Divider(color: Color(0xFF065535)),
+                Container(
+                  height: 60,
+                  child: buildButtonWithIcon(
                     onPressed: () {
                       // '사용자 권한 변경 요청' 버튼 눌렀을 때 수행할 작업 추가
                     },
                     label: '사용자 권한 변경 요청',
                     icon: Icons.change_circle,
                   ),
-                  const Divider(),
-                  buildButtonWithIcon(
+                ),
+                const Divider(color: Color(0xFF065535)),
+                Container(
+                  height: 60,
+                  child: buildButtonWithIcon(
                     onPressed: () {
-                      _showLogoutConfirmationDialog(context);
+                      showModalBottomSheet<void>(context: context, builder: (context) => LogoutConfirmation());
                     },
-                    label: 'Logout',
+                    label: '로그아웃',
                     icon: Icons.exit_to_app,
                     textColor: Colors.red,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ],
@@ -93,10 +118,6 @@ class MyPage extends StatelessWidget {
         child: Row(
           children: [
             Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: Colors.black),
-              ),
               padding: const EdgeInsets.all(10),
               child: Icon(icon),
             ),
@@ -112,35 +133,6 @@ class MyPage extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-
-  void _showLogoutConfirmationDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Logout Check'),
-          content: Text('정말 로그아웃 하시겠습니까?'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('취소'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (BuildContext context) => Login()),
-                );
-              },
-              child: Text('로그아웃'),
-            ),
-          ],
-        );
-      },
     );
   }
 
@@ -164,3 +156,32 @@ class MyPage extends StatelessWidget {
     );
   }
 }
+
+class LogoutConfirmation extends StatelessWidget {
+  LogoutConfirmation({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(100, 30, 100, 30),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text("정말 로그아웃 하시겠습니까?.",),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (BuildContext context) => Login()),
+                      (Route<dynamic> route) => false,
+                );
+              },
+              child: Text("[로그아웃]", style: TextStyle(color: Colors.red),),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+

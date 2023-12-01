@@ -17,7 +17,7 @@ class _DiseaseState extends State<Disease> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          '                    Disease',
+          '           과거에 앓았던 질병',
           style: TextStyle(
             color: Color(0xFF101522),
             fontSize: 20,
@@ -1027,15 +1027,20 @@ class _DiseasePanelState extends State<DiseasePanel> {
           ),
         ),
         SizedBox(
-          height: 50,
+          height: 30,
         ),
+        Text("[ 입력하고 싶지 않으시다면 다음을 눌러주세요. ]"),
         TextButton(onPressed: () {
           List<String> selectedItems = checkboxStates.keys.where((key) => checkboxStates[key] == true).toList();
-          detail.setDiseases(selectedItems[0], selectedItems[1], selectedItems[2]);
 
-          print(detail.disease1);
-          print(detail.disease2);
-          print(detail.disease3);
+          if (selectedItems.isEmpty) {
+            selectedItems = ['', '', ''];
+          } else if (selectedItems.length < 3) {
+            while (selectedItems.length < 3) {
+              selectedItems.add('');
+            }
+          }
+          detail.setDiseases(selectedItems[0], selectedItems[1], selectedItems[2]);
 
           Navigator.push(
               context,

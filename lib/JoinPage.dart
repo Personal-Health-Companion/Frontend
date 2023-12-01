@@ -27,7 +27,7 @@ class _JoinState extends State<Join> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          '                       Join',
+          '                    회원가입',
           textAlign: TextAlign.center,
           style: TextStyle(
             color: Color(0xFF101522),
@@ -88,6 +88,7 @@ class _JoinPanelState extends State<JoinPanel> {
           ),
           TextField(
             controller: PWController,
+            obscureText: true,
             decoration: InputDecoration(
                 filled: true,
                 fillColor: Color(0xFFF9F9FB),

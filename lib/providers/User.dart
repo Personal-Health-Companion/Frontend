@@ -32,7 +32,7 @@ class User with ChangeNotifier {
     notifyListeners();
   }
 
-  void setDetailsId(Details? newDetails) {
+  void setDetails(Details? newDetails) {
     details = newDetails;
     notifyListeners();
   }

@@ -4,6 +4,7 @@ class Details with ChangeNotifier {
   int? id;
   String age;
   String gender;
+  String job = '';
   String disease1 = '';
   String disease2 = '';
   String disease3 = '';
@@ -24,11 +25,13 @@ class Details with ChangeNotifier {
   required this.hobby1,
   required this.hobby2,
   required this.hobby3,
-  required this.medicine});
+  required this.medicine,
+  required this.job});
 
-  void setAgeGender(String newAge, String newGender) {
+  void setAgeGenderJob(String newAge, String newGender, String newJob) {
     age = newAge;
     gender = newGender;
+    job = newJob;
     notifyListeners();
   }
 
@@ -68,10 +71,26 @@ class Details with ChangeNotifier {
     notifyListeners();
   }
 
+  void setLogin(String ageLogin, String genderLogin, String jobLogin, String disease1Login, String disease2Login, String disease3Login, String surgeryLogin, String hobby1Login, String hobby2Login, String hobby3Login, String medicineLogin) {
+    age = ageLogin;
+    gender = genderLogin;
+    job = jobLogin;
+    disease1 = disease1Login;
+    disease2 = disease2Login;
+    disease3 = disease3Login;
+    surgery = surgeryLogin;
+    hobby1 = hobby1Login;
+    hobby2 = hobby2Login;
+    hobby3 = hobby3Login;
+    medicine = medicineLogin;
+    notifyListeners();
+  }
+
   Map<String, dynamic> toJson() {
     return {
       'id': id,
       'age': age,
+      'job': job,
       'gender': gender,
       'disease1': disease1,
       'disease2': disease2,
@@ -87,6 +106,7 @@ class Details with ChangeNotifier {
   Details.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         age = json['age'],
+        job = json['job'],
         gender = json['gender'],
         disease1 = json['disease1'],
         disease2 = json['disease2'],

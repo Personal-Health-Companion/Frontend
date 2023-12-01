@@ -75,6 +75,10 @@ flutter:
     - assets/images/4.png
     - assets/images/5.png
     - assets/images/6.png
+    - assets/images/house.png
+    - assets/images/calendars.png
+    - assets/images/people.png
+    - assets/images/robotic.png
     - assets/
   #   - images/a_dot_ham.jpeg
 

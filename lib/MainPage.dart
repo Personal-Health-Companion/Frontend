@@ -22,12 +22,12 @@ class _MainState extends State<Main> {
 
   @override
   Widget build(BuildContext context) {
-    var user = Provider.of<User>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: const Center(
           child: Text(
-            'Home',
+            '나만의 주치의',
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Color(0xFF101522),
@@ -49,7 +49,7 @@ class _MainState extends State<Main> {
           HomePanel(),
           Chat(),
           Calendar(),
-          MyPage(userName: user.userName,),
+          MyPage(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -60,11 +60,11 @@ class _MainState extends State<Main> {
         },
         unselectedItemColor: Colors.grey,
         selectedItemColor: Color(0xFF065535),
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.mail), label: 'Chatbot'),
-          BottomNavigationBarItem(icon: Icon(Icons.calendar_month), label: 'Calendar'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'My Page'),
+        items: [
+          BottomNavigationBarItem(icon: Image.asset('assets/images/house.png', width: 24, height: 24), label: '홈'),
+          BottomNavigationBarItem(icon: Image.asset('assets/images/robotic.png', width: 24, height: 24), label: '챗봇'),
+          BottomNavigationBarItem(icon: Image.asset('assets/images/calendars.png', width: 24, height: 24), label: '달력'),
+          BottomNavigationBarItem(icon: Image.asset('assets/images/people.png', width: 24, height: 24), label: '내 정보'),
         ],
       ),
     );

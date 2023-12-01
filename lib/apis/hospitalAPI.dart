@@ -11,8 +11,8 @@ class hospitalAPI {
     final url = Uri.parse('$baseUrl/hospital/address/$userID');
     final response = await http.get(url);
 
-    print('Response status: ${response.statusCode}'); // 응답 상태 코드 로그 출력
-    print('Response body: ${response.body}'); // 응답 본문 로그 출력
+    // print('Response status: ${response.statusCode}'); // 응답 상태 코드 로그 출력
+    // print('Response body: ${response.body}'); // 응답 본문 로그 출력
 
     if (response.statusCode != 200) {
       print(response.statusCode);

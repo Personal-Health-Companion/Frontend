@@ -18,7 +18,7 @@ class _SurgeryMedicineState extends State<SurgeryMedicine> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          '          Surgery or Medicine',
+          '         수술 이력, 복용중인 약',
           style: TextStyle(
             color: Color(0xFF101522),
             fontSize: 20,

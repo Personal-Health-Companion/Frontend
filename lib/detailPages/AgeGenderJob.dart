@@ -16,7 +16,7 @@ class _AgeGenderState extends State<AgeGender> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          '             Age and Gender',
+          '             나이와 성별 입력',
           style: TextStyle(
             color: Color(0xFF101522),
             fontSize: 20,
@@ -43,6 +43,7 @@ class _AgeGenderPanelState extends State<AgeGenderPanel> {
   bool _agreedToTOS = false;
   String? _selectedGender;
   final _ageController = TextEditingController();
+  final _jobController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -119,13 +120,33 @@ class _AgeGenderPanelState extends State<AgeGenderPanel> {
             enabled: _agreedToTOS,
           ),
         ),
+        Text("  직업이 없다면 입력하지 않으셔도 돼요", style: TextStyle(color: Colors.grey),),
+        Padding(
+          padding: const EdgeInsets.only(right: 16.0, left: 16.0),
+          child: TextField(
+            controller: _jobController,
+            decoration: InputDecoration(
+                filled: true,
+                fillColor: Color(0xFFF9F9FB),
+                contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(width: 1, color: Color(0xFFE5E7EB)),
+                  borderRadius: BorderRadius.circular(24),
+                ),
+                labelText: "직업을 입력해주세요"
+            ),
+            enabled: _agreedToTOS,
+          ),
+        ),
         SizedBox(
-          height: 300,
+          height: 270,
         ),
         TextButton(onPressed: () {
-          detail.setAgeGender(_ageController.text, _selectedGender!);
+          _jobController.text ??= '';
+          detail.setAgeGenderJob(_ageController.text, _selectedGender!, _jobController.text);
           print(detail.age);
           print(detail.gender);
+          print(detail.job);
           Navigator.push(
               context,
               MaterialPageRoute(
