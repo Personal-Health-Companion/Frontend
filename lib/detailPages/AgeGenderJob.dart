@@ -16,7 +16,7 @@ class _AgeGenderState extends State<AgeGender> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          '             나이와 성별 입력',
+          '           나이와 성별 입력',
           style: TextStyle(
             color: Color(0xFF101522),
             fontSize: 20,
@@ -139,7 +139,7 @@ class _AgeGenderPanelState extends State<AgeGenderPanel> {
           ),
         ),
         SizedBox(
-          height: 270,
+          height: 230,
         ),
         TextButton(onPressed: () {
           _jobController.text ??= '';

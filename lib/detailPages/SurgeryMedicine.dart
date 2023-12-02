@@ -18,7 +18,7 @@ class _SurgeryMedicineState extends State<SurgeryMedicine> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          '         수술 이력, 복용중인 약',
+          '       수술 이력, 복용중인 약',
           style: TextStyle(
             color: Color(0xFF101522),
             fontSize: 20,
@@ -42,7 +42,6 @@ class SurgeryMedicinePanel extends StatefulWidget {
 }
 
 class _SurgeryMedicinePanelState extends State<SurgeryMedicinePanel> {
-  bool _agreedToTOS = false;
   final _surgeryController = TextEditingController();
   final _medicineController = TextEditingController();
 
@@ -51,18 +50,6 @@ class _SurgeryMedicinePanelState extends State<SurgeryMedicinePanel> {
     var detail = Provider.of<Details>(context);
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: CheckboxListTile(
-            title: Text("의료 정보 수집에 동의합니다."),
-            value: _agreedToTOS,
-            onChanged: (bool? newValue) {
-              setState(() {
-                _agreedToTOS = newValue!;
-              });
-            },
-          ),
-        ),
         SizedBox(
           height: 50,
         ),
@@ -81,7 +68,6 @@ class _SurgeryMedicinePanelState extends State<SurgeryMedicinePanel> {
                 prefixIcon: const Icon(Icons.masks),
                 labelText: "수술 하신 적이 있다면 이름을 알려주세요"
             ),
-            enabled: _agreedToTOS,
           ),
         ),
         Padding(
@@ -99,11 +85,10 @@ class _SurgeryMedicinePanelState extends State<SurgeryMedicinePanel> {
                 prefixIcon: const Icon(Icons.medication_rounded),
                 labelText: "복용 중인 약을 알려주세요"
             ),
-            enabled: _agreedToTOS,
           ),
         ),
         SizedBox(
-          height: 300,
+          height: 370,
         ),
         TextButton(onPressed: () {
           _surgeryController.text ??= '';
