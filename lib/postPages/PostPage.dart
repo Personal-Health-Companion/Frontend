@@ -79,8 +79,13 @@ class _PostPanelState extends State<PostPanel> {
             return Card(
               child: ListTile(
                 title: Text(postList.allPostList[index].title, overflow: TextOverflow.ellipsis,),  // 게시물 제목
-                subtitle: Text(postList.allPostList[index].question, overflow: TextOverflow.ellipsis,),  // 게시물 내용
-                // 다른 필요한 정보들을 추가로 표시할 수 있습니다.
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(postList.allPostList[index].question, overflow: TextOverflow.ellipsis,),
+                    Text(postList.allPostList[index].category, style: TextStyle(color: Colors.grey),),
+                  ],
+                ),  // 게시물 내용
                 onTap: () {
                   showModalBottomSheet<void>(
                     context: context,
@@ -121,7 +126,7 @@ class PostDetail extends StatelessWidget {
               width: 550,
               padding: EdgeInsets.all(10.0),
               decoration: BoxDecoration(
-                color: Color(0xFFE5E7EB),
+                color: Color(0xFFF2F3F6),
                 borderRadius: BorderRadius.circular(10.0),
               ),
               child: Text(
@@ -143,7 +148,10 @@ class PostDetail extends StatelessWidget {
                     showModalBottomSheet<void>(
                         context: context,
                         isScrollControlled: true,
-                        builder: (context) => AnswerDoc(postId: post.Id!));
+                        builder: (context) => Container(
+                          height: MediaQuery.of(context).size.height * 0.9,
+                          child: AnswerDoc(postId: post.Id!),)
+                    );
                   },
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFa9d18e)),
@@ -233,7 +241,7 @@ class _savePostState extends State<savePost> {
               decoration: InputDecoration(
                   filled: true,
                   fillColor: Color(0xFFF9F9FB),
-                  contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 150),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 50),
                   border: OutlineInputBorder(
                     borderSide: BorderSide(width: 1, color: Color(0xFFE5E7EB)),
                     borderRadius: BorderRadius.circular(24),
@@ -305,7 +313,7 @@ class _AnswerDocState extends State<AnswerDoc> {
               decoration: InputDecoration(
                   filled: true,
                   fillColor: Color(0xFFF9F9FB),
-                  contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 50),
                   border: OutlineInputBorder(
                     borderSide: BorderSide(width: 1, color: Color(0xFFE5E7EB)),
                     borderRadius: BorderRadius.circular(24),

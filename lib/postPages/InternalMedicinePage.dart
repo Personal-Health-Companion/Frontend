@@ -143,7 +143,10 @@ class PostDetail extends StatelessWidget {
                     showModalBottomSheet<void>(
                         context: context,
                         isScrollControlled: true,
-                        builder: (context) => AnswerDoc(postId: post.Id!));
+                        builder: (context) => Container(
+                        height: MediaQuery.of(context).size.height * 0.9,
+                        child: AnswerDoc(postId: post.Id!),)
+                    );
                   },
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFa9d18e)),
@@ -233,7 +236,7 @@ class _savePostState extends State<savePost> {
               decoration: InputDecoration(
                   filled: true,
                   fillColor: Color(0xFFF9F9FB),
-                  contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 150),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 50),
                   border: OutlineInputBorder(
                     borderSide: BorderSide(width: 1, color: Color(0xFFE5E7EB)),
                     borderRadius: BorderRadius.circular(24),
@@ -305,7 +308,7 @@ class _AnswerDocState extends State<AnswerDoc> {
               decoration: InputDecoration(
                   filled: true,
                   fillColor: Color(0xFFF9F9FB),
-                  contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 50),
                   border: OutlineInputBorder(
                     borderSide: BorderSide(width: 1, color: Color(0xFFE5E7EB)),
                     borderRadius: BorderRadius.circular(24),
