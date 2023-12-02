@@ -1,3 +1,4 @@
+import 'package:capstonedesign_23_2/apis/userAPI.dart';
 import 'package:capstonedesign_23_2/providers/User.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -75,8 +76,12 @@ class MyPage extends StatelessWidget {
                 Container(
                   height: 60,
                   child: buildButtonWithIcon(
-                    onPressed: () {
-                      // '사용자 권한 변경 요청' 버튼 눌렀을 때 수행할 작업 추가
+                    onPressed: () async {
+                      bool isChanged = await userAPI.changeRole(user);
+
+                      if(isChanged) {
+                        showModalBottomSheet<void>(context: context, builder: (context) => Changed());
+                      }
                     },
                     label: '사용자 권한 변경 요청',
                     icon: Icons.change_circle,
@@ -178,6 +183,25 @@ class LogoutConfirmation extends StatelessWidget {
               },
               child: Text("[로그아웃]", style: TextStyle(color: Colors.red),),
             ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class Changed extends StatelessWidget {
+  const Changed({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const SingleChildScrollView(
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(100, 30, 100, 30),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text("권한이 변경되었습니다.", style: TextStyle(color: Colors.red),),
           ],
         ),
       ),

@@ -7,8 +7,8 @@ class Post with ChangeNotifier {
   late final String category;
   late final String title;
   late final String question;
-  String docName;
-  String answer;
+  String? docName;
+  String? answer;
   User? user;
 
   Post(
