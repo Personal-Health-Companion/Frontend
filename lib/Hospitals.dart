@@ -2,6 +2,7 @@ import 'package:capstonedesign_23_2/providers/User.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'dart:convert';
 import 'providers/Hospital.dart';
 import 'apis/hospitalAPI.dart';
@@ -80,14 +81,24 @@ class HospitalPanel extends StatelessWidget {
                               children: [
                                 Row(
                                   children: [
-                                    Text("    " + snapshot.data![index].name),
-                                    Text(" | " + snapshot.data![index].code),
+                                    Flexible(child: Text("    " + snapshot.data![index].name)), // Flexible 위젯 추가
+                                    Flexible(child: Text(" | " + snapshot.data![index].code)),  // Fle
                                   ],
                                 ),
                                 Row(
                                   children: [
                                     Text("    "),
-                                    Icon(Icons.call),
+                                    InkWell(
+                                      onTap: () async {
+                                        var telephoneUrl = "tel:${snapshot.data![index].telephone}";
+                                        if (await canLaunch(telephoneUrl)) {
+                                          await launch(telephoneUrl);
+                                        } else {
+                                          throw 'Could not launch $telephoneUrl';
+                                        }
+                                      },
+                                      child: Icon(Icons.call),
+                                    ),
                                     Text(snapshot.data![index].telephone),
                                   ],
                                 ),
