@@ -17,7 +17,7 @@ class _DiseaseState extends State<Disease> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          '           과거에 앓았던 질병',
+          '          과거에 앓았던 질병',
           style: TextStyle(
             color: Color(0xFF101522),
             fontSize: 20,

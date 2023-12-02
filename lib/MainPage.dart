@@ -1,13 +1,18 @@
+import 'package:capstonedesign_23_2/PostPages/DentistryPage.dart';
+import 'package:capstonedesign_23_2/PostPages/InternalMedicinePage.dart';
+import 'package:capstonedesign_23_2/PostPages/OrthopedicPage.dart';
+import 'package:capstonedesign_23_2/PostPages/TraumaPage.dart';
 import 'package:capstonedesign_23_2/providers/User.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'PostPages/NeurologyPage.dart';
 import 'apis/hospitalAPI.dart';
 import 'providers/Hospital.dart';
 import 'Hospitals.dart';
 import 'ChatPage.dart';
 import 'Calendar.dart';
 import 'MyPage.dart';
-import 'PostPage.dart';
+import 'PostPages/PostPage.dart';
 
 class Main extends StatefulWidget {
   const Main({super.key});
@@ -90,7 +95,7 @@ class HomePanel extends StatelessWidget {
             ),
         ),
         const Padding(
-          padding: EdgeInsets.only(left: 16, top: 16),
+          padding: EdgeInsets.only(left: 16, top: 10),
           child: Text("커뮤니티  ", style: TextStyle(fontSize: 17),),
         ),
         const Padding(
@@ -125,7 +130,12 @@ class HomePanel extends StatelessWidget {
                       ),
                     ),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => NeurologyPage()));
+                      },
                       child: Column(
                         children: [
                           Image.asset('assets/images/2.png'),
@@ -135,7 +145,12 @@ class HomePanel extends StatelessWidget {
                       ),
                     ),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => InternalMedicinePage()));
+                      },
                       child: Column(
                         children: [
                           Image.asset('assets/images/3.png'),
@@ -145,7 +160,12 @@ class HomePanel extends StatelessWidget {
                       ),
                     ),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => DentistryPage()));
+                      },
                       child: Column(
                         children: [
                           Image.asset('assets/images/4.png'),
@@ -163,7 +183,12 @@ class HomePanel extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => TraumaPage()));
+                      },
                       child: Column(
                         children: [
                           Image.asset('assets/images/5.png'),
@@ -173,7 +198,12 @@ class HomePanel extends StatelessWidget {
                       ),
                     ),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => OrthopedicPage()));
+                      },
                       child: Column(
                         children: [
                           Image.asset('assets/images/6.png'),
