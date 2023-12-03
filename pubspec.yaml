@@ -82,6 +82,7 @@ flutter:
     - assets/images/people.png
     - assets/images/robotic.png
     - assets/images/write.png
+    - assets/images/loading.gif
     - assets/
 
   #   - images/a_dot_ham.jpeg

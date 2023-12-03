@@ -1,6 +1,7 @@
 import 'package:capstonedesign_23_2/providers/Hospital.dart';
 import 'package:capstonedesign_23_2/providers/UserDetail.dart';
 import 'package:flutter/material.dart';
+import 'Hospitals.dart';
 import 'providers/User.dart';
 import 'package:provider/provider.dart';
 import 'providers/Chat.dart';
@@ -28,9 +29,16 @@ class ChatPanel extends StatefulWidget {
   _ChatPanelState createState() => _ChatPanelState();
 }
 
-class _ChatPanelState extends State<ChatPanel> {
+class _ChatPanelState extends State<ChatPanel> with AutomaticKeepAliveClientMixin {
+
+  @override
+  bool get wantKeepAlive => true;
+
+  bool isLoading = false;
+
   final List<ChatMessage> _messages = <ChatMessage>[];
   final TextEditingController _textController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
 
   void _handleSubmitted(String text, String role) {
     _textController.clear();
@@ -39,8 +47,17 @@ class _ChatPanelState extends State<ChatPanel> {
       role: role,
     );
     setState(() {
-      _messages.insert(0, message);
+      _messages.add(message);
     });
+    _scrollToBottom();
+  }
+
+  void _scrollToBottom() { // Add this
+    _scrollController.animateTo(
+      _scrollController.position.maxScrollExtent,
+      duration: Duration(milliseconds: 500),
+      curve: Curves.ease,
+    );
   }
 
   Widget _buildTextComposer() {
@@ -87,12 +104,20 @@ class _ChatPanelState extends State<ChatPanel> {
               onPressed: () async {
                 if (!detailsIsNull) {
                   String text = _textController.text;
-                  _handleSubmitted(text, "User"); // 화면에 메시지 추가
+                  _handleSubmitted(text, user.userName);
+
+                  setState(() {
+                    isLoading = true;
+                  });
 
                   String ans = await ChatAPI.saveChat(user, text); // API 통신
                   print(ans);
 
-                  _handleSubmitted(ans, "System");
+                  setState(() {
+                    isLoading = false; // Clear loading state
+                  });
+
+                  _handleSubmitted(ans, "챗봇");
                 }
               },
             ),
@@ -109,9 +134,24 @@ class _ChatPanelState extends State<ChatPanel> {
         Flexible(
             child: ListView.builder(
               padding: EdgeInsets.all(8.0),
-              reverse: true,
-              itemBuilder: (_, int index) => _messages[index],
-              itemCount: _messages.length,
+              reverse: false,
+              itemBuilder: (_, int index) {
+                if (index < _messages.length) {
+                  return _messages[index];
+                } else if (isLoading) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("답변을 생성 중입니다 "),
+                      Center(child: Image.asset("assets/images/loading.gif")),
+                    ],
+                  );
+                } else {
+                  return SizedBox.shrink();
+                }
+              },
+              itemCount: _messages.length + 1,
+              controller: _scrollController,
             )),
         Divider(height: 1.0),
         Container(
@@ -137,30 +177,67 @@ class ChatMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 10.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Container(
-            margin: EdgeInsets.only(right: 16.0),
-          ),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(role, style: Theme.of(context).textTheme.subtitle1),
-                Container(
-                  margin: EdgeInsets.only(top: 5.0),
-                  child: Text(text, softWrap: true, overflow: TextOverflow.visible, style: TextStyle(fontSize: 18),),
-                ),
-              ],
+        margin: EdgeInsets.symmetric(vertical: 10.0),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.only(right: 16.0),
             ),
-          ),
-        ],
-      )
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(role, style: Theme.of(context).textTheme.subtitle1),
+
+                  Container(
+                    width: 600,
+                    padding: EdgeInsets.all(5.0),
+                    decoration: BoxDecoration(
+                      color: Color(0xFFF2F3F6),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: Text(text, softWrap: true, overflow: TextOverflow.visible, style: TextStyle(fontSize: 18),),
+                  ),
+                  SizedBox(height: 7,),
+                  // Add this
+                  if (role == "챗봇") ...[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Wrap(
+                          spacing: 20.0, // gap between chips
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Hospitals()));
+                              },
+                              child: Chip(
+                                label: Text('병원 추천 바로가기'),
+                                backgroundColor: Color(0xffe4f5d9),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ],
+              ),
+            ),
+          ],
+        )
     );
   }
 }
+
+
 
 
 class Error extends StatelessWidget {

@@ -28,7 +28,7 @@ class MyPage extends StatelessWidget {
           ),
           Container(
             decoration: ShapeDecoration(
-              color: Color(0xFFa9d18e),
+              color: Color(0xffe4f5d9),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(50),
