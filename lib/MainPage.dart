@@ -2,6 +2,8 @@ import 'package:capstonedesign_23_2/PostPages/DentistryPage.dart';
 import 'package:capstonedesign_23_2/PostPages/InternalMedicinePage.dart';
 import 'package:capstonedesign_23_2/PostPages/OrthopedicPage.dart';
 import 'package:capstonedesign_23_2/PostPages/TraumaPage.dart';
+import 'package:capstonedesign_23_2/postPages/ENTPage.dart';
+import 'package:capstonedesign_23_2/postPages/ObstetricsPage.dart';
 import 'package:capstonedesign_23_2/providers/User.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -212,11 +214,35 @@ class HomePanel extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Container(
-                      width: 70,
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ENTPage()));
+                      },
+                      child: Column(
+                        children: [
+                          Image.asset('assets/images/7.png'),
+                          SizedBox(height: 5,),
+                          Text("이비인후과", style: TextStyle(color: Color(0xFF065535)),),
+                        ],
+                      ),
                     ),
-                    Container(
-                      width: 70,
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ObstetricsPage()));
+                      },
+                      child: Column(
+                        children: [
+                          Image.asset('assets/images/8.png'),
+                          SizedBox(height: 5,),
+                          Text("산부인과", style: TextStyle(color: Color(0xFF065535)),),
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -255,14 +281,15 @@ class HomePanel extends StatelessWidget {
                       children: [
                         Row(
                           children: [
-                            Text("    " + hospital.name),
+                            Text("  " + hospital.name),
                             Text(" | " + hospital.code),
                           ],
                         ),
                         Row(
                           children: [
-                            Text("    "),
+                            Text("  "),
                             Icon(Icons.call),
+                            Text(" "),
                             Text(hospital.telephone),
                           ],
                         ),

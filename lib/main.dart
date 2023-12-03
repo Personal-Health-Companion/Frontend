@@ -1,4 +1,5 @@
 import 'package:capstonedesign_23_2/providers/Answer.dart';
+import 'package:capstonedesign_23_2/providers/HospitalList.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'LoginPage.dart';
@@ -29,6 +30,9 @@ void main() {
         ),
         ChangeNotifierProvider(
           create: (context) => Answer(docName: '', answer: ''),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => HospitalList(),
         ),
       ],
       child: MyApp(),

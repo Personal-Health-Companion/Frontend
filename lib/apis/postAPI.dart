@@ -83,4 +83,37 @@ class postAPI {
     return true;
   }
 
+  // 게시물 검색
+  static Future<List<Post>> getSearchPosts(String keyword) async {
+    final url = Uri.parse('$baseUrl/post/search?keyword=$keyword');
+    final response = await http.get(url);
+
+    // print('Response status: ${response.statusCode}'); // 응답 상태 코드 로그 출력
+    // print('Response body: ${response.body}'); // 응답 본문 로그 출력
+
+    if (response.statusCode != 200) {
+      print(response.statusCode);
+      throw Error();
+    }
+
+    final List<dynamic> posts = jsonDecode(utf8.decode(response.bodyBytes));
+    List<Post> postInstances = posts.map((schedule) => Post.fromJson(schedule)).toList();
+    return postInstances;
+  }
+
+  // 카테고리에서 게시물 검색
+  static Future<List<Post>> getSearchCategoryPosts(String category, String keyword) async {
+    final url = Uri.parse('$baseUrl/category?category=$category&keyword=$keyword');
+    final response = await http.get(url);
+
+    if (response.statusCode != 200) {
+      print(response.statusCode);
+      throw Error();
+    }
+
+    final List<dynamic> posts = jsonDecode(utf8.decode(response.bodyBytes));
+    List<Post> postInstances = posts.map((schedule) => Post.fromJson(schedule)).toList();
+    return postInstances;
+  }
+
 }

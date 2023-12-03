@@ -1,3 +1,4 @@
+import 'package:capstonedesign_23_2/apis/postAPI.dart';
 import 'package:capstonedesign_23_2/providers/Answer.dart';
 import 'package:capstonedesign_23_2/providers/PostList.dart';
 import 'package:flutter/material.dart';
@@ -59,6 +60,8 @@ class PostPanel extends StatefulWidget {
 
 class _PostPanelState extends State<PostPanel> {
 
+  TextEditingController Search = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -71,36 +74,97 @@ class _PostPanelState extends State<PostPanel> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<PostList>(
-      builder: (context, postList, child) {
-        return ListView.builder(
-          itemCount: postList.allPostList.length,
-          itemBuilder: (context, index) {
-            return Card(
-              child: ListTile(
-                title: Text(postList.allPostList[index].title, overflow: TextOverflow.ellipsis,),  // 게시물 제목
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(postList.allPostList[index].question, overflow: TextOverflow.ellipsis,),
-                    Text(postList.allPostList[index].category, style: TextStyle(color: Colors.grey),),
-                  ],
-                ),  // 게시물 내용
-                onTap: () {
-                  showModalBottomSheet<void>(
-                    context: context,
-                    isScrollControlled: true,
-                    builder: (context) => Container(
-                      height: MediaQuery.of(context).size.height * 0.9,
-                      child: PostDetail(post: postList.allPostList[index]),
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              Flexible(
+                child: TextField(
+                  controller: Search,
+                  decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Color(0xFFF9F9FB),
+                      contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(width: 1, color: Color(0xFFE5E7EB)),
+                        borderRadius: BorderRadius.circular(24),
+                      ),
+                      prefixIcon: const Icon(Icons.search),
+                      labelText: "검색할 내용을 입력하세요."
+                  ),
+                ),
+                flex: 8,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 5),
+                child: Container(
+                  width: 80,
+                  height: 47,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      context.read<PostList>().updateSearchPostList(Search.text);
+                    },
+                    child: Text("검색"),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Expanded(
+          child: Consumer<PostList>(
+            builder: (context, postList, child) {
+              return ListView.builder(
+                itemCount: postList.allPostList.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(3.0),
+                    child: Container(
+                      height: 130,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16.0),
+                      ),
+                      child: Card(
+                        child: ListTile(
+                          title: Text(postList.allPostList[index].title, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis,),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(postList.allPostList[index].question, style: TextStyle(fontSize: 18), maxLines: 2, overflow: TextOverflow.ellipsis,),
+                              Row(
+                                children: [
+                                  Text(postList.allPostList[index].category, style: TextStyle(color: Colors.grey),),
+                                  Text(" | "),
+                                  Text(
+                                    postList.allPostList[index].answer == null ? "답변 전" : "답변 완료",
+                                    style: TextStyle(color: Colors.red),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          onTap: () {
+                            showModalBottomSheet<void>(
+                              context: context,
+                              isScrollControlled: true,
+                              builder: (context) => Container(
+                                height: MediaQuery.of(context).size.height * 0.9,
+                                child: PostDetail(post: postList.allPostList[index]),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
                     ),
                   );
                 },
-              ),
-            );
-          },
-        );
-      },
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }
@@ -259,6 +323,7 @@ class _savePostState extends State<savePost> {
                   var postList = Provider.of<PostList>(context, listen: false);
                   await postList.addPostList(user.Id!, savePost);
 
+                  context.read<PostList>().updatePostList();
                   Navigator.pop(context);
                 }
               },
@@ -335,6 +400,7 @@ class _AnswerDocState extends State<AnswerDoc> {
                     showModalBottomSheet<void>(context: context, builder: (context) => Error());
                   }
 
+                  context.read<PostList>().updatePostList();
                   Navigator.pop(context);
                 }
               },
