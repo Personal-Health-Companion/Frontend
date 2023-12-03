@@ -20,7 +20,7 @@ class _NeurologyPageState extends State<NeurologyPage> {
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: const Text(
-          '                 신경과',
+          '                  신경과',
           textAlign: TextAlign.center,
           style: TextStyle(
             color: Color(0xFF101522),
@@ -59,6 +59,8 @@ class NeurologyPanel extends StatefulWidget {
 
 class _NeurologyPanelState extends State<NeurologyPanel> {
 
+  TextEditingController Search = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -71,31 +73,97 @@ class _NeurologyPanelState extends State<NeurologyPanel> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<PostList>(
-      builder: (context, postList, child) {
-        return ListView.builder(
-          itemCount: postList.allNeurologyList.length,
-          itemBuilder: (context, index) {
-            return Card(
-              child: ListTile(
-                title: Text(postList.allNeurologyList[index].title, overflow: TextOverflow.ellipsis,),  // 게시물 제목
-                subtitle: Text(postList.allNeurologyList[index].question, overflow: TextOverflow.ellipsis,),  // 게시물 내용
-                // 다른 필요한 정보들을 추가로 표시할 수 있습니다.
-                onTap: () {
-                  showModalBottomSheet<void>(
-                    context: context,
-                    isScrollControlled: true,
-                    builder: (context) => Container(
-                      height: MediaQuery.of(context).size.height * 0.9,
-                      child: PostDetail(post: postList.allNeurologyList[index]),
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              Flexible(
+                child: TextField(
+                  controller: Search,
+                  decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Color(0xFFF9F9FB),
+                      contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(width: 1, color: Color(0xFFE5E7EB)),
+                        borderRadius: BorderRadius.circular(24),
+                      ),
+                      prefixIcon: const Icon(Icons.search),
+                      labelText: "검색할 내용을 입력하세요."
+                  ),
+                ),
+                flex: 8,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 5),
+                child: Container(
+                  width: 80,
+                  height: 47,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      context.read<PostList>().searchNeurologyPostList(Search.text);
+                    },
+                    child: Text("검색"),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Expanded(
+          child: Consumer<PostList>(
+            builder: (context, postList, child) {
+              return ListView.builder(
+                itemCount: postList.allNeurologyList.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(3.0),
+                    child: Container(
+                      height: 130,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16.0),
+                      ),
+                      child: Card(
+                        child: ListTile(
+                          title: Text(postList.allNeurologyList[index].title, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis,),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(postList.allNeurologyList[index].question, style: TextStyle(fontSize: 18), maxLines: 2, overflow: TextOverflow.ellipsis,),
+                              Row(
+                                children: [
+                                  Text(postList.allNeurologyList[index].category, style: TextStyle(color: Colors.grey),),
+                                  Text(" | "),
+                                  Text(
+                                    postList.allNeurologyList[index].answer == null ? "답변 전" : "답변 완료",
+                                    style: TextStyle(color: Colors.red),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          onTap: () {
+                            showModalBottomSheet<void>(
+                              context: context,
+                              isScrollControlled: true,
+                              builder: (context) => Container(
+                                height: MediaQuery.of(context).size.height * 0.9,
+                                child: PostDetail(post: postList.allNeurologyList[index]),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
                     ),
                   );
                 },
-              ),
-            );
-          },
-        );
-      },
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }
@@ -121,7 +189,7 @@ class PostDetail extends StatelessWidget {
               width: 550,
               padding: EdgeInsets.all(10.0),
               decoration: BoxDecoration(
-                color: Color(0xFFE5E7EB),
+                color: Color(0xFFF2F3F6),
                 borderRadius: BorderRadius.circular(10.0),
               ),
               child: Text(
@@ -254,6 +322,7 @@ class _savePostState extends State<savePost> {
                   var postList = Provider.of<PostList>(context, listen: false);
                   await postList.addPostList(user.Id!, savePost);
 
+                  context.read<PostList>().updatePostList();
                   Navigator.pop(context);
                 }
               },
@@ -330,6 +399,7 @@ class _AnswerDocState extends State<AnswerDoc> {
                     showModalBottomSheet<void>(context: context, builder: (context) => Error());
                   }
 
+                  context.read<PostList>().updatePostList();
                   Navigator.pop(context);
                 }
               },
