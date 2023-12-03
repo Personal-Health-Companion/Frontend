@@ -37,4 +37,18 @@ class hospitalAPI {
     return hospitalInstance;
   }
 
+  // 병원 검색
+  static Future<List<Hospital>> getSearchHospitals(int? userID, String type) async {
+    final url = Uri.parse('$baseUrl/hospital/name/$userID?type=$type');
+    final response = await http.get(url);
+
+    if (response.statusCode != 200) {
+      print(response.statusCode);
+      throw Error();
+    }
+    final List<dynamic> hospitals = jsonDecode(utf8.decode(response.bodyBytes));
+    List<Hospital> hospitalInstance = hospitals.map((item) => Hospital.fromJson(item)).toList();
+    return hospitalInstance;
+  }
+
 }

@@ -1,9 +1,8 @@
+import 'package:capstonedesign_23_2/providers/HospitalList.dart';
 import 'package:capstonedesign_23_2/providers/User.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'dart:convert';
 import 'providers/Hospital.dart';
 import 'apis/hospitalAPI.dart';
 
@@ -20,7 +19,7 @@ class _HospitalsState extends State<Hospitals> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          '                   Hospitals',
+          '                 Hospitals',
           style: TextStyle(
             color: Color(0xFF101522),
             fontSize: 20,
@@ -34,91 +33,133 @@ class _HospitalsState extends State<Hospitals> {
   }
 }
 
-class HospitalPanel extends StatelessWidget {
-  HospitalPanel({super.key});
+class HospitalPanel extends StatefulWidget {
+  const HospitalPanel({Key? key}) : super(key: key);
+
+  @override
+  State<HospitalPanel> createState() => _HospitalPanelState();
+}
+
+class _HospitalPanelState extends State<HospitalPanel> {
 
   TextEditingController Search = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    update();
+  }
+
+  void update() {
+    context.read<HospitalList>().updateHospitalList(15);
+  }
+
+
+  @override
   Widget build(BuildContext context) {
     var user = Provider.of<User>(context);
-    return Padding(
-      padding: const EdgeInsets.all(12.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          TextField(
-            controller: Search,
-            decoration: InputDecoration(
-                filled: true,
-                fillColor: Color(0xFFF9F9FB),
-                contentPadding: EdgeInsets.symmetric(horizontal: 16),
-                border: OutlineInputBorder(
-                  borderSide: BorderSide(width: 1, color: Color(0xFFE5E7EB)),
-                  borderRadius: BorderRadius.circular(24),
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              Flexible(
+                child: TextField(
+                  controller: Search,
+                  decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Color(0xFFF9F9FB),
+                      contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(width: 1, color: Color(0xFFE5E7EB)),
+                        borderRadius: BorderRadius.circular(24),
+                      ),
+                      prefixIcon: const Icon(Icons.search),
+                      labelText: "찾고 싶으신 병원을 입력해주세요."
+                  ),
                 ),
-                prefixIcon: const Icon(Icons.search),
-                labelText: "검색할 내용을 입력하세요."
-            ),
-          ),
-          Expanded(
-            child: FutureBuilder<List<Hospital>>(
-              future: hospitalAPI.getHospitals(user.Id),
-              builder: (BuildContext context, AsyncSnapshot<List<Hospital>> snapshot) {
-                if (snapshot.hasData) {
-                  return ListView.builder(
-                    itemCount: snapshot.data?.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return ListTile(
-                        title: Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Color(0xFF065535), width: 1),
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    Flexible(child: Text("    " + snapshot.data![index].name)), // Flexible 위젯 추가
-                                    Flexible(child: Text(" | " + snapshot.data![index].code)),  // Fle
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Text("    "),
-                                    InkWell(
-                                      onTap: () async {
-                                        var telephoneUrl = "tel:${snapshot.data![index].telephone}";
-                                        if (await canLaunch(telephoneUrl)) {
-                                          await launch(telephoneUrl);
-                                        } else {
-                                          throw 'Could not launch $telephoneUrl';
-                                        }
-                                      },
-                                      child: Icon(Icons.call),
-                                    ),
-                                    Text(snapshot.data![index].telephone),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
+                flex: 8,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 5),
+                child: Container(
+                  width: 80,
+                  height: 47,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      context.read<HospitalList>().updateSearchHospitalList(user.Id, Search.text);
                     },
-                  );
-                } else if (snapshot.hasError) {
-                  return Text("Error: ${snapshot.error}");
-                } else {
-                  return CircularProgressIndicator();
-                }
-              },
-            ),
+                    child: Text("검색"),
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+        Expanded(
+          child: Consumer<HospitalList>(
+            builder: (context, hospitalList, child) {
+              return ListView.builder(
+                itemCount: hospitalList.allHospital.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(3.0),
+                    child: Container(
+                      height: 85,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16.0),
+                      ),
+                      child: Card(
+                        child: ListTile(
+                          title: Row(
+                            children: [
+                              Flexible(child: Text(hospitalList.allHospital[index].name, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis,)),
+                              Text(" | "),
+                              Text(hospitalList.allHospital[index].code, style: TextStyle(color: Colors.grey),),
+                            ],
+                          ),
+                          subtitle: Row(
+                            children: [
+                              InkWell(
+                                onTap: () async {
+                                  var telephoneUrl = "tel:${hospitalList.allHospital[index].telephone}";
+                                  if (await canLaunch(telephoneUrl)) {
+                                    await launch(telephoneUrl);
+                                  } else {
+                                    throw 'Could not launch $telephoneUrl';
+                                  }
+                                },
+                                child: Icon(Icons.call),
+                              ),
+                              Text(" " + hospitalList.allHospital[index].telephone, style: TextStyle(fontSize: 18), maxLines: 2, overflow: TextOverflow.ellipsis,),
+                            ],
+                          ),
+                          onTap: () {
+                            showModalBottomSheet(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return Container(
+                                  padding: EdgeInsets.all(20.0),
+                                  child: Text(
+                                    hospitalList.allHospital[index].address,
+                                    style: TextStyle(fontSize: 18),
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }
+
