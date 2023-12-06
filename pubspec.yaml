@@ -43,6 +43,12 @@ dependencies:
   equatable: ^2.0.0
   flutter_speed_dial: ^4.2.1
   url_launcher: ^6.2.1
+  flutter_native_splash: ^2.3.6
+  firebase_core: ^2.24.0
+  image_picker: ^1.0.4
+  permission_handler: ^10.2.0
+  cloud_firestore: ^4.4.3
+  firebase_storage: ^11.0.15
 
 dev_dependencies:
   flutter_test:
@@ -114,3 +120,6 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+flutter_native_splash:
+  color: "#42a5f5"
