@@ -116,4 +116,19 @@ class postAPI {
     return postInstances;
   }
 
+  // 사용자가 작성한 게시물
+  static Future<List<Post>> getUserPosts(int userId) async {
+    final url = Uri.parse('$baseUrl/posts/$userId');
+    final response = await http.get(url);
+
+    if (response.statusCode != 200) {
+      print(response.statusCode);
+      throw Error();
+    }
+
+    final List<dynamic> posts = jsonDecode(utf8.decode(response.bodyBytes));
+    List<Post> postInstances = posts.map((schedule) => Post.fromJson(schedule)).toList();
+    return postInstances;
+  }
+
 }

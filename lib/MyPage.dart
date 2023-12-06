@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:capstonedesign_23_2/MyPosts.dart';
 import 'package:capstonedesign_23_2/providers/User.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -57,9 +58,12 @@ class MyPage extends StatelessWidget {
                   height: 60,
                   child: buildButtonWithIcon(
                     onPressed: () {
-                      // '내가 쓴 질문글' 버튼 눌렀을 때 수행할 작업 추가
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MyPostsPage()));
                     },
-                    label: '내가 쓴 질문글',
+                    label: '${user.userName} 님이 작성한 질문글',
                     icon: Icons.list,
                   ),
                 ),

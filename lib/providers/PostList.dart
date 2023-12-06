@@ -7,6 +7,7 @@ import 'Answer.dart';
 class PostList extends ChangeNotifier {
   List<Post> allPostList = [];
   List<Post> searchPostList = [];
+  List<Post> allUserPostList = [];
 
   List<Post> allNeurologyList = [];
   List<Post> allOrthopedicList = [];
@@ -27,6 +28,12 @@ class PostList extends ChangeNotifier {
   // 모든 게시물 불러오기
   Future<void> updatePostList() async {
     allPostList = await postAPI.getPosts();
+    notifyListeners();
+  }
+
+  // 모든 사용자 게시물 불러오기
+  Future<void> updateUserPostList(int userId) async {
+    allUserPostList = await postAPI.getUserPosts(userId);
     notifyListeners();
   }
 
