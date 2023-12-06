@@ -52,7 +52,6 @@ class _HospitalPanelState extends State<HospitalPanel> {
     context.read<HospitalList>().updateHospitalList(15);
   }
 
-
   @override
   Widget build(BuildContext context) {
     var user = Provider.of<User>(context);
@@ -121,9 +120,10 @@ class _HospitalPanelState extends State<HospitalPanel> {
                             children: [
                               InkWell(
                                 onTap: () async {
-                                  var telephoneUrl = "tel:${hospitalList.allHospital[index].telephone}";
-                                  if (await canLaunch(telephoneUrl)) {
-                                    await launch(telephoneUrl);
+                                  var telephone = hospitalList.allHospital[index].telephone;
+                                  final telephoneUrl = Uri.parse("tel:+${telephone.replaceAll('-', '')}");
+                                  if (await canLaunchUrl(telephoneUrl)) {
+                                    await launchUrl(telephoneUrl);
                                   } else {
                                     throw 'Could not launch $telephoneUrl';
                                   }
