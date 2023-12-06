@@ -3,8 +3,6 @@ import 'package:capstonedesign_23_2/providers/User.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'providers/Hospital.dart';
-import 'apis/hospitalAPI.dart';
 
 class Hospitals extends StatefulWidget {
   const Hospitals({super.key});
@@ -19,7 +17,7 @@ class _HospitalsState extends State<Hospitals> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          '                 Hospitals',
+          '                인근 병원',
           style: TextStyle(
             color: Color(0xFF101522),
             fontSize: 20,
