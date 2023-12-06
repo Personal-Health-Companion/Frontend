@@ -1,9 +1,11 @@
-import 'package:capstonedesign_23_2/apis/userAPI.dart';
+import 'dart:io';
 import 'package:capstonedesign_23_2/providers/User.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'JoinPage.dart';
 import 'LoginPage.dart';
+import 'package:image_picker/image_picker.dart';
+
 
 class MyPage extends StatelessWidget {
   const MyPage({super.key});
@@ -77,10 +79,18 @@ class MyPage extends StatelessWidget {
                   height: 60,
                   child: buildButtonWithIcon(
                     onPressed: () async {
-                      bool isChanged = await userAPI.changeRole(user);
-
-                      if(isChanged) {
-                        showModalBottomSheet<void>(context: context, builder: (context) => Changed());
+                      ImagePicker _picker = ImagePicker();
+                      XFile? _pick = await _picker.pickImage(source: ImageSource.gallery);
+                      if (_pick != null) {
+                        File _file = File(_pick.path);
+                        FirebaseStorage.instance.ref("secure/${user.Id}").putFile(
+                          _file,
+                          SettableMetadata(
+                            customMetadata: {
+                              "userID": "${user.Id}",
+                            },
+                          ),
+                        );
                       }
                     },
                     label: '사용자 권한 변경 요청',
@@ -208,4 +218,3 @@ class Changed extends StatelessWidget {
     );
   }
 }
-
