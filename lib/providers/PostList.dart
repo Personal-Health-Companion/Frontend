@@ -134,16 +134,22 @@ class PostList extends ChangeNotifier {
 
     if(post.category == "else") {
       allPostList.add(post);
+      updatePostList();
     } else if(post.category == "Neurology") {
       allNeurologyList.add(post);
+      updateNeurologyPostList();
     } else if(post.category == "Orthopedic") {
       allOrthopedicList.add(post);
+      updateOrthopedicPostList();
     } else if(post.category == "InternalMedicine") {
       allInternalMedicineList.add(post);
+      updateInternalMedicinePostList();
     } else if(post.category == "Dentistry") {
       allDentistryList.add(post);
+      updateDentistryPostList();
     } else if(post.category == "Trauma") {
       allTraumaList.add(post);
+      updateTraumaPostList();
     }
     notifyListeners();
   }
