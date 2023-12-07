@@ -20,7 +20,7 @@ class _TraumaPageState extends State<TraumaPage> {
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: const Text(
-          '                  외상',
+          '                성형외과',
           textAlign: TextAlign.center,
           style: TextStyle(
             color: Color(0xFF101522),
@@ -180,9 +180,12 @@ class PostDetail extends StatelessWidget {
         padding: const EdgeInsets.all(30.0),
         child: Column(
           children: <Widget>[
-            Text(
-              '${post.title}',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                '${post.title}',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
             ),
             SizedBox(height: 20),
             Container(
@@ -191,6 +194,10 @@ class PostDetail extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Color(0xFFF2F3F6),
                 borderRadius: BorderRadius.circular(10.0),
+                border: Border.all(
+                  color: Colors.black,
+                  width: 1,
+                ),
               ),
               child: Text(
                 '${post.question}',
@@ -204,6 +211,15 @@ class PostDetail extends StatelessWidget {
                 Text(
                   "아직 답변이 없어요!",
                   style: TextStyle(fontSize: 25, color: Colors.blueGrey),
+                ),
+                SizedBox(height: 20,),
+                Text(
+                  "답변 권한을 가지고 계시다면",
+                  style: TextStyle(fontSize: 14, color: Colors.red),
+                ),
+                Text(
+                  "질문한 사용자에게 도움을 주세요!",
+                  style: TextStyle(fontSize: 14, color: Colors.red),
                 ),
                 SizedBox(height: 20,),
                 ElevatedButton(
@@ -230,14 +246,33 @@ class PostDetail extends StatelessWidget {
             ) :
             Column(
               children: [
-                Text(
-                  '${post.docName} 님의 답변',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Icon(Icons.local_hospital_outlined, color: Colors.red,),
+                    SizedBox(width: 6),
+                    Text(
+                      '${post.docName} 님의 답변',
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                  ],
                 ),
                 SizedBox(height: 10),
-                Text(
-                  '${post.answer}', // 답변 내용
-                  style: TextStyle(fontSize: 18),
+                Container(
+                  width: 550,
+                  padding: EdgeInsets.all(10.0),
+                  decoration: BoxDecoration(
+                    color: Color(0xFFF2F3F6),
+                    borderRadius: BorderRadius.circular(10.0),
+                    border: Border.all(
+                      color: Colors.black,
+                      width: 1,
+                    ),
+                  ),
+                  child: Text(
+                    '${post.answer}',
+                    style: TextStyle(fontSize: 18),
+                  ),
                 ),
               ],
             ),
@@ -322,7 +357,7 @@ class _savePostState extends State<savePost> {
                   var postList = Provider.of<PostList>(context, listen: false);
                   await postList.addPostList(user.Id!, savePost);
 
-                  context.read<PostList>().updatePostList();
+                  await context.read<PostList>().updatePostList();
                   Navigator.pop(context);
                 }
               },
@@ -396,10 +431,10 @@ class _AnswerDocState extends State<AnswerDoc> {
                   if(response) {
                     Navigator.pop(context);
                   } else {
-                    showModalBottomSheet<void>(context: context, builder: (context) => Error());
+                    await showModalBottomSheet<void>(context: context, builder: (context) => Error());
                   }
 
-                  context.read<PostList>().updatePostList();
+                  await context.read<PostList>().updatePostList();
                   Navigator.pop(context);
                 }
               },
