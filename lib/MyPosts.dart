@@ -130,9 +130,12 @@ class PostDetail extends StatelessWidget {
         padding: const EdgeInsets.all(30.0),
         child: Column(
           children: <Widget>[
-            Text(
-              '${post.title}',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                '${post.title}',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
             ),
             SizedBox(height: 20),
             Container(
@@ -141,6 +144,10 @@ class PostDetail extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Color(0xFFF2F3F6),
                 borderRadius: BorderRadius.circular(10.0),
+                border: Border.all(
+                  color: Colors.black,
+                  width: 1,
+                ),
               ),
               child: Text(
                 '${post.question}',
@@ -159,14 +166,33 @@ class PostDetail extends StatelessWidget {
             ) :
             Column(
               children: [
-                Text(
-                  '${post.docName} 님의 답변',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Icon(Icons.local_hospital_outlined, color: Colors.red,),
+                    SizedBox(width: 6),
+                    Text(
+                      '${post.docName} 님의 답변',
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                  ],
                 ),
                 SizedBox(height: 10),
-                Text(
-                  '${post.answer}', // 답변 내용
-                  style: TextStyle(fontSize: 18),
+                Container(
+                  width: 550,
+                  padding: EdgeInsets.all(10.0),
+                  decoration: BoxDecoration(
+                    color: Color(0xFFF2F3F6),
+                    borderRadius: BorderRadius.circular(10.0),
+                    border: Border.all(
+                      color: Colors.black,
+                      width: 1,
+                    ),
+                  ),
+                  child: Text(
+                    '${post.answer}',
+                    style: TextStyle(fontSize: 18),
+                  ),
                 ),
               ],
             ),
