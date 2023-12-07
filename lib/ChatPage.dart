@@ -1,10 +1,8 @@
-import 'package:capstonedesign_23_2/providers/Hospital.dart';
 import 'package:capstonedesign_23_2/providers/UserDetail.dart';
 import 'package:flutter/material.dart';
 import 'Hospitals.dart';
 import 'providers/User.dart';
 import 'package:provider/provider.dart';
-import 'providers/Chat.dart';
 import 'detailPages/AgeGenderJob.dart';
 import 'apis/chatAPI.dart';
 
@@ -129,6 +127,7 @@ class _ChatPanelState extends State<ChatPanel> with AutomaticKeepAliveClientMixi
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       body: Column(children: <Widget>[
         Flexible(
@@ -188,25 +187,28 @@ class ChatMessage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(role, style: Theme.of(context).textTheme.subtitle1),
-
+                  Text(role, style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold)),
+                  SizedBox(height: 5,),
                   Container(
                     width: 600,
                     padding: EdgeInsets.all(5.0),
                     decoration: BoxDecoration(
                       color: Color(0xFFF2F3F6),
                       borderRadius: BorderRadius.circular(10.0),
+                      border: Border.all(
+                        color: Colors.black,
+                        width: 2,
+                      ),
                     ),
                     child: Text(text, softWrap: true, overflow: TextOverflow.visible, style: TextStyle(fontSize: 18),),
                   ),
                   SizedBox(height: 7,),
-                  // Add this
                   if (role == "챗봇") ...[
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Wrap(
-                          spacing: 20.0, // gap between chips
+                          spacing: 20.0,
                           children: [
                             GestureDetector(
                               onTap: () {
