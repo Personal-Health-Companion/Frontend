@@ -1,4 +1,5 @@
 import 'package:capstonedesign_23_2/providers/Answer.dart';
+import 'package:capstonedesign_23_2/providers/ChatsList.dart';
 import 'package:capstonedesign_23_2/providers/HospitalList.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -39,6 +40,9 @@ void main() async {
         ),
         ChangeNotifierProvider(
           create: (context) => HospitalList(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ChatsList(),
         ),
       ],
       child: MyApp(),

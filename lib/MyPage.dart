@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'LoginPage.dart';
 import 'package:image_picker/image_picker.dart';
+import 'MyChats.dart';
 
 
 class MyPage extends StatelessWidget {
@@ -72,10 +73,13 @@ class MyPage extends StatelessWidget {
                   height: 60,
                   child: buildButtonWithIcon(
                     onPressed: () {
-                      _showCustomerServiceDialog(context);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MyChatPage(userId: user.Id!,)));
                     },
-                    label: '고객센터',
-                    icon: Icons.help,
+                    label: '${user.userName} 님의 챗봇 이용 내역',
+                    icon: Icons.list_outlined,
                   ),
                 ),
                 const Divider(color: Color(0xFF065535)),
@@ -154,26 +158,6 @@ class MyPage extends StatelessWidget {
       ),
     );
   }
-
-  void _showCustomerServiceDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('고객센터'),
-          content: Text('준비중입니다.'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('확인'),
-            ),
-          ],
-        );
-      },
-    );
-  }
 }
 
 class LogoutConfirmation extends StatelessWidget {
@@ -187,7 +171,7 @@ class LogoutConfirmation extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("정말 로그아웃 하시겠습니까?.",),
+            Text("정말 로그아웃 하시겠습니까?",),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pushAndRemoveUntil(
